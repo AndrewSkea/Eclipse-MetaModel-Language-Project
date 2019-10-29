@@ -19,6 +19,7 @@ class Table{
 	attr int tableID;
 	attr int capacity;
 	
+	@gmf.compartment
 	val Attendee[+] attendees;
 }
 
@@ -29,12 +30,12 @@ class Attendee {
 	attr String lastName;
 	attr String affiliation;
 	
+	attr int seatIndex;
+	
 	val Language[+] spokenLanguages;
 	val FoodAllergy[*] foodAllergies;
 	
 	val AttendeeWish[*] anttendeeWishes;
-	
-	attr int seatIndex;
 }
 
 

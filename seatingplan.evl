@@ -1,40 +1,66 @@
 context SeatingPlan {
 
   constraint HasName {
-  		guard : self.satisfies('HasName')
   		
       	check : self.seatingPlanName.isDefined()
       	
       	message : 'Unnamed Seating Plaen "' + self.eClass().name + '" not allowed'
-      	
-      	fix {
-      		title: "Assign name to seating plan"
-      		do {
-      			
-      		}
-      	}
-
   }
+  
+  
+  critique NameStartsWithCapital  {
+  
+  		guard : self.satisfies('HasName')
+  		
+  		check : self.name.firstToUpperCase() = self.name
+  		
+  		message : 'SeatingPlan "' + self.name +
+          '" should start with an upper-case letter'
+  		
+  		fix {
+
+          title : 'Rename to ' + self.name.firstToUpperCase()
+
+          do {
+              self.name := self.name.firstToUpperCase();
+          }
+      }
+  		
+  } 
 
 }
 
 
 context Attendee {
 
-  constraint HasFirstName {
+  constraint HasFirstAndLastName {
   
-      	check : self.firstName.isDefined()
+      	check : self.firstName.isDefined() and self.lastName.isDefined()
       	
-      	message : 'Attendee "' + self.eClass().name + '" must have a first name'
+      	message : 'Attendee "' + self.eClass().name + '" must have a first name and a second name'
 
   }
   
-  constraint HasLastName {
+  critique NamesStartWithCapitals  {
+  
+  		guard : self.satisfies('HasFirstAndLastName')
+  		
+  		check : self.firstName.firstToUpperCase() = self.firstName and
+  				self.lastName.firstToUpperCase() = self.lastName
+  		
+  		message : "First Name: '" + self.firstName + "' and Last Name: '" + self.lastName + "' should start with an upper-cases"
+  		
+  		fix {
 
-      check : self.lastName.isDefined()
-      
-      message : 'Attendee "' + self.eClass().name + '" must have a last name'
+          title : 'Rename to ' + self.firstName.firstToUpperCase() + " " + self.lastName.firstToUpperCase()
 
-  }
+          do {
+              self.firstName := self.firstName.firstToUpperCase();
+              self.lastName := self.lastName.firstToUpperCase();
+          }
+      }
+  		
+  } 
+  
 
 }
