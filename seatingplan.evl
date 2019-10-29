@@ -1,0 +1,40 @@
+context SeatingPlan {
+
+  constraint HasName {
+  		guard : self.satisfies('HasName')
+  		
+      	check : self.seatingPlanName.isDefined()
+      	
+      	message : 'Unnamed Seating Plaen "' + self.eClass().name + '" not allowed'
+      	
+      	fix {
+      		title: "Assign name to seating plan"
+      		do {
+      			
+      		}
+      	}
+
+  }
+
+}
+
+
+context Attendee {
+
+  constraint HasFirstName {
+  
+      	check : self.firstName.isDefined()
+      	
+      	message : 'Attendee "' + self.eClass().name + '" must have a first name'
+
+  }
+  
+  constraint HasLastName {
+
+      check : self.lastName.isDefined()
+      
+      message : 'Attendee "' + self.eClass().name + '" must have a last name'
+
+  }
+
+}

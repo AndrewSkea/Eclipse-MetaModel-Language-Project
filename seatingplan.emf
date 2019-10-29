@@ -1,0 +1,67 @@
+@namespace(uri="seatingplan", prefix="")
+@gmf
+package seatingplan;
+
+
+@gmf.diagram
+class SeatingPlan{
+	attr String seatingPlanName;
+	
+	val Table[*] tables;
+
+	val Language[*] languages;
+	val FoodAllergy[*] allergies;
+}
+
+
+@gmf.node(label="tableID")
+class Table{
+	attr int tableID;
+	attr int capacity;
+	
+	val Attendee[+] attendees;
+}
+
+
+@gmf.node(label="lastName")
+class Attendee {
+	attr String firstName;
+	attr String lastName;
+	attr String affiliation;
+	
+	val Language[+] spokenLanguages;
+	val FoodAllergy[*] foodAllergies;
+	
+	val AttendeeWish[*] anttendeeWishes;
+	
+	attr int seatIndex;
+}
+
+
+@gmf.node(label="wish")
+class AttendeeWish {
+
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	ref Attendee targetAttendee;
+	
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	attr Feeling wish;
+}
+
+
+@gmf.node(label="languageName")
+class Language {
+	attr String languageName;
+}
+
+
+@gmf.node(label="foodAllergyName")
+class FoodAllergy {
+	attr String foodAllergyName;
+}
+
+
+enum Feeling {
+	Like;
+	Dislike;
+}

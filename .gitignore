@@ -1,0 +1,13 @@
+.classpath
+META-INF/
+bin/
+build.properties
+plugin.*
+seatingplan.ecore
+seatingplan.genmodel
+seatingplan.gmfgen
+seatingplan.gmfgraph
+seatingplan.gmfmap
+seatingplan.gmftool
+seatingplan.trace
+src/
