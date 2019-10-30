@@ -1,27 +1,13 @@
-
-  pre {
-  	
-  }
-
-
 context SeatingPlan {
 
   constraint HasName {
-  		
       	check : self.seatingPlanName.isDefined()
-      	
       	message : 'Unnamed Seating Plan "' + self.eClass().name + '" not allowed'
-      	
       	fix {
-
           title : 'Add Seating Plan name to ' + self.eClass().name
-
           do {
-
               var name := System.user.prompt('Input name of seating plan');
-
               if (name.isDefined()) self.seatingPlanName := name;
-
           }
 
       }
@@ -29,18 +15,12 @@ context SeatingPlan {
   
   
   critique NameStartsWithCapital  {
-  
   		guard : self.satisfies('HasName')
-  		
   		check : self.seatingPlanName.firstToUpperCase() = self.seatingPlanName
-  		
   		message : 'SeatingPlan "' + self.seatingPlanName +
           '" should start with an upper-case letter'
-  		
   		fix {
-
           title : 'Rename to ' + self.seatingPlanName.firstToUpperCase()
-
           do {
               self.seatingPlanName := self.seatingPlanName.firstToUpperCase();
           }
@@ -76,15 +56,10 @@ context SeatingPlan {
 context Attendee {
 
   constraint HasFirstAndLastName {
-  
       	check : self.firstName.isDefined() and self.lastName.isDefined()
-      	
       	message : 'Attendee "' + self.eClass().name + '" must have a first name and a second name'
-
 		fix {
-
           title : 'Ensure there is both a first and last name for ' + self.eClass().name
-
           do {
           
           		if (not self.firstName.isDefined()) {
@@ -149,27 +124,21 @@ context Table {
 
 	constraint TableHasID {
 		check : self.tableID.isDefined()
-      	
       	message : 'Table "' + self.eClass().name + '" must have an ID'
-
 		fix {
-
           title : 'Creating unique IDs for all the tables'
-
           do {
           		var i = 0; 
           		for (el in Table.all) {
-          			el.tableID = i; i += 1;
-          		}
+          			el.tableID = i; i += 1;}
           }
-
       }
 	}
 	
 	constraint HasCapacity {
 		guard : self.satisfies('TableHasID')
 		check : self.capacity.isDefined()
-		message : 'Table "' + self.eClass().name + '" must have a name'
+		message : 'Table "' + self.eClass().name + '" must have a capacity'
 		fix {
           title : 'Set the capacity for the table'
           do {
@@ -240,28 +209,22 @@ context Seat {
 
 	constraint HasIndex {
 		check: self.index.isDefined()
-		
 		message: "The Seat '" + self.eClass().name + "' must have an index"
 		
 		fix {
 			title: "Creating index for the seat"
 			do {
-				self.index = self.parent.seats.index.max();
+				self.index = self.parent.seats.index.max(0) + 1;
 			}
 		}
 	}
 	
 	constraint HasAttendee {
 		guard: self.satisfies('HasIndex')
-	
 		check: self.attendeeSeat.isDefined()
-		
 		message: "The Seat '" + self.eClass().name + "' must have an assigned attendee"
-		
 		fix {
-		
 			title: "Choose the attendee"
-			
 			do {
 				var chosenAttendees = System.user.chooseMany("Choose attendees", SeatingPlan.attendees);
 				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
@@ -274,10 +237,42 @@ context AttendeeWish {
 
 	constraint HasReferencedAttendee {
 		check: self.targetAttendee.isDefined()
+		message: "There must be a referenced attendee"
+		fix {
+			title: "Choose the attendee"
+			do {
+				possibleAttendees = SeatingPlan.attendees - self.parent;
+				var chosenAttendees = System.user.choose("Choose attendees", possibleAttendees);
+				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+			}
+		}
 	}
 	
 	constraint HasWish {
+		guard: self.satisfies('HasReferencedAttendee')
 		check: self.wish.isDefined()
+		message: "There must be a wish defined"
+		fix {
+			title: "Choose the attendee"
+			do {
+				var feeling = System.user.choose("Choose feeling", Feeling);
+				if (feeling.isDefined()) self.wish = feeling;
+			}
+		}
+	}
+	
+	constraint AttendeeIsNotSelf {
+		guard: self.satisfies('HasWish')
+		check: self.targetAttendee <> self.parent
+		message: "Cannot assign a feeling to the same person"
+		fix {
+			title: "Choose another attendee"
+			do {
+				possibleAttendees = SeatingPlan.attendees - self.parent;
+				var chosenAttendees = System.user.choose("Choose attendees", possibleAttendees);
+				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+			}
+		}
 	}
 
 }
@@ -286,6 +281,14 @@ context Language {
 
 	constraint IsDefined {
 		check: self.languageName.isDefined()
+		message: "Language isn't defined"
+		fix {
+			title: "Set language name"
+			do {
+				name = System.user.prompt("Input language name");
+				if (name.isDefined()) self.languageName = name;
+			}
+		}	
 	}
 
 }
@@ -294,6 +297,14 @@ context Language {
 context FoodAllergy {
 	constraint IsDefined {
 		check: self.foodAllergyName.isDefined()
+		message: "Food Allergy isn't defined"
+		fix {
+			title: "Set allergy name"
+			do {
+				name = System.user.prompt("Input allergy name");
+				if (name.isDefined()) self.foodAllergyName = name;
+			}
+		}
 	}
 }
 

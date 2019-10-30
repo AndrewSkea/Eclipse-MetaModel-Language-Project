@@ -1,0 +1,5 @@
+rule Attendee2HTML
+	transform attendee : Attendee {
+		template: "attendee-template.egl"
+		target: "gen/attendee-" + attendee.attendeeID + ".html"
+	}
