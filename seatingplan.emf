@@ -6,11 +6,10 @@ package seatingplan;
 @gmf.diagram
 class SeatingPlan{
 	attr String seatingPlanName;
-	
 	val Table[*] tables;
-
 	val Language[*] languages;
 	val FoodAllergy[*] allergies;
+	val Attendee[*] attendees;
 }
 
 
@@ -20,7 +19,15 @@ class Table{
 	attr int capacity;
 	
 	@gmf.compartment
-	val Attendee[+] attendees;
+	val Seat[+] seats;
+}
+
+
+@gmf.node(label="index")
+class Seat {
+	attr int index;
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	ref Attendee attendeeSeat;
 }
 
 
@@ -30,11 +37,13 @@ class Attendee {
 	attr String lastName;
 	attr String affiliation;
 	
-	attr int seatIndex;
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	ref Language[+] spokenLanguages;
 	
-	val Language[+] spokenLanguages;
-	val FoodAllergy[*] foodAllergies;
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	ref FoodAllergy[*] foodAllergies;
 	
+	@gmf.compartment
 	val AttendeeWish[*] anttendeeWishes;
 }
 

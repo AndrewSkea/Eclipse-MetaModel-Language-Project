@@ -1,10 +1,30 @@
+
+  pre {
+  	
+  }
+
+
 context SeatingPlan {
 
   constraint HasName {
   		
       	check : self.seatingPlanName.isDefined()
       	
-      	message : 'Unnamed Seating Plaen "' + self.eClass().name + '" not allowed'
+      	message : 'Unnamed Seating Plan "' + self.eClass().name + '" not allowed'
+      	
+      	fix {
+
+          title : 'Add Seating Plan name to ' + self.eClass().name
+
+          do {
+
+              var name := System.user.prompt('Input name of seating plan');
+
+              if (name.isDefined()) self.seatingPlanName := name;
+
+          }
+
+      }
   }
   
   
@@ -12,21 +32,43 @@ context SeatingPlan {
   
   		guard : self.satisfies('HasName')
   		
-  		check : self.name.firstToUpperCase() = self.name
+  		check : self.seatingPlanName.firstToUpperCase() = self.seatingPlanName
   		
-  		message : 'SeatingPlan "' + self.name +
+  		message : 'SeatingPlan "' + self.seatingPlanName +
           '" should start with an upper-case letter'
   		
   		fix {
 
-          title : 'Rename to ' + self.name.firstToUpperCase()
+          title : 'Rename to ' + self.seatingPlanName.firstToUpperCase()
 
           do {
-              self.name := self.name.firstToUpperCase();
+              self.seatingPlanName := self.seatingPlanName.firstToUpperCase();
           }
       }
   		
-  } 
+  }
+  
+ constraint TableIdUnique {
+ 		guard: self.satisfies('NameStartsWithCapital')
+		
+		check: self.tables.tableID == self.tables.tableID.asSet()
+		
+		message: "All seated attendees must be unique, the same person cannot sit in two places"
+
+}
+ 
+  
+  constraint SeatAttendeeUnique {
+		guard: self.satisfies('TableIdUnique')
+		
+		check {
+			var seatedAttendees = self.tables.collect(t | t.seats.attendeeSeat);
+  			var duplicatePeople = seatedAttendees - seatedAttendees.asSet();
+			return duplicatePeople.size() > 0;
+		}
+		
+		message: "All seated attendees must be unique, the same person cannot sit in two places"
+	}
 
 }
 
@@ -39,7 +81,26 @@ context Attendee {
       	
       	message : 'Attendee "' + self.eClass().name + '" must have a first name and a second name'
 
+		fix {
+
+          title : 'Ensure there is both a first and last name for ' + self.eClass().name
+
+          do {
+          
+          		if (not self.firstName.isDefined()) {
+          			var firstName := System.user.prompt('Input First Name');}
+          		
+          		if (not self.lastName.isDefined()) {
+          			var lastName := System.user.prompt('Input Last Name');}
+
+              	if (firstName.isDefined()) self.firstName := firstName;
+              	if (lastName.isDefined()) self.lastName := lastName;
+
+          }
+
+      }
   }
+  
   
   critique NamesStartWithCapitals  {
   
@@ -60,7 +121,189 @@ context Attendee {
           }
       }
   		
-  } 
+  }
   
+  constraint HasLanguage {
+  		guard : self.satisfies('HasFirstAndLastName')
+  		
+  		check: self.spokenLanguages.size() > 0
+  		
+  		message : self.firstName + " " + self.lastName + " must speak at least one language"
+  		
+  		fix {
+  			title: "Add a spoken language for " + self.firstName + " " + self.lastName 
+  			
+  			do {
+  				var chosenLanguages = System.user.chooseMany("Choose languages", SeatingPlan.languages);
+				if (chosenLanguages.size() > 0) self.spokenLanguages.add(chosenLanguages);
+  			}
+  		}	
+  		
+  }
+  
+}
+
+
+
+context Table {
+
+	constraint TableHasID {
+		check : self.tableID.isDefined()
+      	
+      	message : 'Table "' + self.eClass().name + '" must have an ID'
+
+		fix {
+
+          title : 'Creating unique IDs for all the tables'
+
+          do {
+          		var i = 0; 
+          		for (el in Table.all) {
+          			el.tableID = i; i += 1;
+          		}
+          }
+
+      }
+	}
+	
+	constraint HasCapacity {
+		guard : self.satisfies('TableHasID')
+		check : self.capacity.isDefined()
+		message : 'Table "' + self.eClass().name + '" must have a name'
+		fix {
+          title : 'Set the capacity for the table'
+          do {
+          		var capacity = System.user.promptInteger("Input the table's capacity");
+          		if (capacity.isDefined()) self.capacity = capacity;
+          }
+
+      }
+	}
+	
+	
+	constraint HasAtLeastOneAttendee {
+	
+		guard : self.satisfies('HasCapacity')
+		check: self.seats.size() >= 1
+		message: "Table " + self.tableID + " has not got any seats"
+		
+		fix {
+		
+			title: "Either add a seat or remove table " + self.tableID + " from the seating plan"
+
+			do {
+				var options = Sequence{"Remove table", "Add seat"};				
+				var option = System.user.choose("Choose an option", options);
+			
+				if (option == "Remove table"){
+					delete(self);
+				}
+				
+				if (option == "Add seat"){
+					var newSeat = new Seat;
+					Seat.index = 1;
+					var chosenAttendee = System.user.choose("Choose attendee", SeatingPlan.attendees);
+					if (chosenAttendee.isDefined()) Seat.attendeeSeat = chosenAttendee;
+					self.seats.add(newSeat);
+				}
+			
+			}
+		}
+	
+	}
+	
+	
+//constraint AttendeeSatWithLanguage {
+//	guard: self.satisfies('HasAtLeastOneAttendee')
+//	
+//	check {
+//		return self.seats.forAll(s |
+//			s.attendeeSeat.spokenLanguages.one(l | l in 
+//			
+//				self.seats.select(seat |
+//					seat.index == s.index + 1 or
+//					seat.index == s.index - 1
+//				).attendeeSeat.spokenLanguages
+//				
+//			)
+//		);
+//	}
+//}
+	
+//	critique AttendeeSatWithWishes {
+//		check: ""
+//	}
+	
+}
+
+context Seat {
+
+	constraint HasIndex {
+		check: self.index.isDefined()
+		
+		message: "The Seat '" + self.eClass().name + "' must have an index"
+		
+		fix {
+			title: "Creating index for the seat"
+			do {
+				self.index = self.parent.seats.index.max();
+			}
+		}
+	}
+	
+	constraint HasAttendee {
+		guard: self.satisfies('HasIndex')
+	
+		check: self.attendeeSeat.isDefined()
+		
+		message: "The Seat '" + self.eClass().name + "' must have an assigned attendee"
+		
+		fix {
+		
+			title: "Choose the attendee"
+			
+			do {
+				var chosenAttendees = System.user.chooseMany("Choose attendees", SeatingPlan.attendees);
+				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+			}
+		}
+	}
+}
+
+context AttendeeWish {
+
+	constraint HasReferencedAttendee {
+		check: self.targetAttendee.isDefined()
+	}
+	
+	constraint HasWish {
+		check: self.wish.isDefined()
+	}
 
 }
+
+context Language {
+
+	constraint IsDefined {
+		check: self.languageName.isDefined()
+	}
+
+}
+
+
+context FoodAllergy {
+	constraint IsDefined {
+		check: self.foodAllergyName.isDefined()
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
