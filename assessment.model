@@ -10,13 +10,14 @@
   <languages xmi:id="_x295kPwiEemU0rIPrT_WWA" languageName="French"/>
   <attendees xmi:id="_vPDcIPwiEemU0rIPrT_WWA" firstName="Ama" lastName="3" mySeat="_VaEbIPwiEemU0rIPrT_WWA" spokenLanguages="_x295kPwiEemU0rIPrT_WWA _w7UJoPwiEemU0rIPrT_WWA">
     <anttendeeWishes xmi:id="_RgWawPwmEemU0rIPrT_WWA" targetAttendee="_v42nEPwiEemU0rIPrT_WWA"/>
+    <anttendeeWishes xmi:id="_ctz_cPwrEemU0rIPrT_WWA" targetAttendee="_v42nEPwiEemU0rIPrT_WWA" wish="Dislike"/>
   </attendees>
   <attendees xmi:id="_v42nEPwiEemU0rIPrT_WWA" firstName="Lauren" lastName="Two" mySeat="_VuEVMPwiEemU0rIPrT_WWA" spokenLanguages="_xYEXEPwiEemU0rIPrT_WWA _w7UJoPwiEemU0rIPrT_WWA _x295kPwiEemU0rIPrT_WWA">
     <anttendeeWishes xmi:id="_TCZcUPwmEemU0rIPrT_WWA" targetAttendee="_wNc-EPwiEemU0rIPrT_WWA"/>
     <anttendeeWishes xmi:id="_xVVPUPwmEemU0rIPrT_WWA" targetAttendee="_vPDcIPwiEemU0rIPrT_WWA" wish="Dislike"/>
   </attendees>
   <attendees xmi:id="_wNc-EPwiEemU0rIPrT_WWA" firstName="Andrew" lastName="One" mySeat="_VEeloPwiEemU0rIPrT_WWA" spokenLanguages="_w7UJoPwiEemU0rIPrT_WWA">
-    <anttendeeWishes xmi:id="_CRQaYPwmEemU0rIPrT_WWA" targetAttendee="_vPDcIPwiEemU0rIPrT_WWA" wish="Dislike"/>
+    <anttendeeWishes xmi:id="_CRQaYPwmEemU0rIPrT_WWA" targetAttendee="_v42nEPwiEemU0rIPrT_WWA"/>
     <anttendeeWishes xmi:id="_CWZuMPwoEemU0rIPrT_WWA" targetAttendee="_v42nEPwiEemU0rIPrT_WWA" wish="Dislike"/>
   </attendees>
 </SeatingPlan>

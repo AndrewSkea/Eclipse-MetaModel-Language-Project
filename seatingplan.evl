@@ -185,6 +185,21 @@ context Attendee {
 		}
 		message: self.firstName + " " + self.lastName + " isn't sitting next to someone that can speak their language"
 	}
+	
+	
+	constraint DifferentWishesOnSamePerson {
+		check {
+			for (attWish in self.anttendeeWishes){
+				var dup = self.anttendeeWishes.select(aW | aW.targetAttendee == attWish.targetAttendee).wish.literal;
+				if (dup.println().size() > 1){
+					if (dup.includes("Like") and dup.includes("Dislike")){
+						return false;
+					}
+				}
+			} return true;
+		}
+		message: self.firstName + " " + self.lastName + " has conflicting wishes for the same person"
+	}
   
 }
 
@@ -340,10 +355,6 @@ context AttendeeWish {
 		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
 				+ " isn't sitting next to someone they liked"
 	}
-	
-//	constraint DifferentWishesOnSamePerson {
-//	}
-
 }
 
 context Language {
