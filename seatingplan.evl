@@ -4,7 +4,6 @@ pre {
   	for (el in tables) {
   		el.tableID = i; i += 1;
   	}
-  	
 }
 
 
@@ -51,19 +50,39 @@ context SeatingPlan {
           			el.tableID = i; i += 1;}
 			}
 		}
-}
- 
-  
-  constraint SeatAttendeeUnique {
-		guard: self.satisfies('TableIdUnique')
-		
-		check {
-			var seatedAttendees = self.tables.collect(t | t.seats.attendeeSeat);
-  			var duplicatePeople = seatedAttendees - seatedAttendees.asSet();
-			return duplicatePeople.size() == 0;
+	}
+	
+	
+	constraint AllergyUnique {
+		check: self.allergies.foodAllergyName.size() == self.allergies.foodAllergyName.asSet().size()
+		message: "Should not have duplicate names for food allergies"
+		fix {
+			title: "Delete the duplicates"
+			do {
+				var allergies: Set<FoodAllergy>;
+				for (alle in self.allergies){
+					if (not allergies.exists(el |el.foodAllergyName == alle.foodAllergyName)){
+						allergies.add(alle);
+					}
+				}
+				self.allergies = allergies;
+			}
 		}
-		
-		message: "All seated attendees must be unique, the same person cannot sit in two places"
+	}
+	
+	
+	constraint LanguageUnique {
+		check: self.languages.languageName.size() == self.languages.languageName.asSet().size()
+		message: "Should not have duplicate names for languages"
+		fix {
+			title: "Delete the duplicates"
+			do {
+				for (lang in self.languages){
+					var dup = self.languages.select(l | l.languageName == lang.languageName);
+					if (dup.size() > 1){delete(lang);}
+				}
+			}
+		}
 	}
 
 }
@@ -93,12 +112,12 @@ context Attendee {
           do {
           
           		if (not self.firstName.isDefined()) {
-          			var firstName := System.user.prompt('Input First Name');
+          			var firstName = System.user.prompt('Input First Name');
           			if (firstName.isDefined()) self.firstName := firstName;
           		}
           		
           		if (not self.lastName.isDefined()) {
-          			var lastName := System.user.prompt('Input Last Name');
+          			var lastName = System.user.prompt('Input Last Name');
           			if (lastName.isDefined()) self.lastName := lastName;
           		}
           }
@@ -143,11 +162,10 @@ context Attendee {
   			do {
   				if (Language.All.size() > 0){
   					var chosenLanguages = System.user.chooseMany("Choose languages", Language.All);
-  					if (chosenLanguage.isTypeOf(Language).println()) {
-  						self.spokenLanguages.add(chosenLanguages);
-  					}
-					if (chosenLanguages.size() > 0){
-						self.spokenLanguages.add(chosenLanguages);
+					if (chosenLanguages.size() > 0) {
+						for (l in chosenLanguages){
+							self.spokenLanguages.add(l);
+						}
 					} 
   				} else {
   					System.user.inform("There are no languages instatiated. Please add a language to the Model first.");
@@ -158,28 +176,24 @@ context Attendee {
   		
   }
   
+  constraint AttendeeSatWithLanguage {
+		guard: self.satisfies('HasLanguage')
+		check {
+			var selfSeat = self.mySeat;
+			var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
+			return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));
+		}
+		message: self.firstName + " " + self.lastName + " isn't sitting next to someone that can speak their language"
+	}
+  
 }
 
 
 
 context Table {
-
-	constraint TableHasID {
-		check : self.tableID.isDefined()
-      	message : 'Table "' + self.eClass().name + '" must have an ID'
-		fix {
-          title : 'Creating unique IDs for all the tables'
-          do {
-          		var i = 0; 
-          		for (el in self.parent.tables) {
-          			el.tableID = i; i += 1;}
-          }
-      }
-	}
 	
 	constraint HasCapacity {
-		guard : self.satisfies('TableHasID')
-		check : self.capacity.isDefined()
+		check : self.capacity.isDefined() and self.capacity > 1
 		message : 'Table "' + self.eClass().name + '" must have a capacity'
 		fix {
           title : 'Set the capacity for the table'
@@ -187,7 +201,6 @@ context Table {
           		var capacity = System.user.promptInteger("Input the table's capacity");
           		if (capacity.isDefined()) self.capacity = capacity;
           }
-
       }
 	}
 	
@@ -212,13 +225,9 @@ context Table {
 				
 				if (option == "Add seat"){
 					if (Attendee.all.size() > 0){
-						var newSeat = new Seat;
-						newSeat.index = 1;
 						var chosenAttendee = System.user.choose("Choose attendee", Attendee.all);
 						if (chosenAttendee.isDefined()) {
-							newSeat.attendeeSeat = chosenAttendee;
-							self.children.add(newSeat);
-							self.seats.add(newSeat);
+							self.seats.add(new Seat(index=1, attendeeSeat=chosenAttendee));
 						} else {
 							System.user.inform("You must choose an attendee");}
 					} else {
@@ -230,27 +239,11 @@ context Table {
 	
 	}
 	
-	
-//constraint AttendeeSatWithLanguage {
-//	guard: self.satisfies('HasAtLeastOneAttendee')
-//	
-//	check {
-//		return self.seats.forAll(s |
-//			s.attendeeSeat.spokenLanguages.one(l | l in 
-//			
-//				self.seats.select(seat |
-//					seat.index == s.index + 1 or
-//					seat.index == s.index - 1
-//				).attendeeSeat.spokenLanguages
-//				
-//			)
-//		);
-//	}
-//}
-	
-//	critique AttendeeSatWithWishes {
-//		check: ""
-//	}
+	constraint UniqueSeat {
+		guard: self.satisfies('HasAtLeastOneAttendee')
+		check: self.seats.index.size() == self.seats.index.asSet().size()
+		message: "All seats on table " + self.tableID + " must be unique. Arange the seats and attendees accordingly."
+	}
 	
 }
 
@@ -275,8 +268,8 @@ context Seat {
 		fix {
 			title: "Choose the attendee"
 			do {
-				var chosenAttendees = System.user.chooseMany("Choose attendees", SeatingPlan.attendees);
-				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+				var chosenAttendee = System.user.choose("Choose attendee", Attendee.all);
+				if (chosenAttendee.size() > 0) self.attendeeSeat = chosenAttendee;
 			}
 		}
 	}
@@ -290,9 +283,9 @@ context AttendeeWish {
 		fix {
 			title: "Choose the attendee"
 			do {
-				possibleAttendees = SeatingPlan.attendees - self.parent;
-				var chosenAttendees = System.user.choose("Choose attendees", possibleAttendees);
-				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+				var possibleAttendees = Attendee.all.reject(a | a == self.sourceAttendee);
+				var chosenAttendee = System.user.choose("Choose attendees", possibleAttendees);
+				if (chosenAttendee.isDefined()) self.targetAttendee = chosenAttendee;
 			}
 		}
 	}
@@ -312,17 +305,44 @@ context AttendeeWish {
 	
 	constraint AttendeeIsNotSelf {
 		guard: self.satisfies('HasWish')
-		check: self.targetAttendee <> self.parent
+		check: self.targetAttendee <> self.sourceAttendee
 		message: "Cannot assign a feeling to the same person"
 		fix {
 			title: "Choose another attendee"
 			do {
-				possibleAttendees = SeatingPlan.attendees - self.parent;
-				var chosenAttendees = System.user.choose("Choose attendees", possibleAttendees);
-				if (chosenAttendees.size() > 0) self.attendees.add(chosenAttendees);
+				var possibleAttendees = Attendee.all.reject(a | a == self.sourceAttendee);
+				var chosenAttendee = System.user.choose("Choose attendees", possibleAttendees);
+				if (chosenAttendee.isDefined()) self.targetAttendee = chosenAttendee;
 			}
 		}
 	}
+	
+	critique AttendeeSatWithDislike {
+		guard: self.satisfies('AttendeeIsNotSelf')
+		check {
+			var selfSeat = self.sourceAttendee.mySeat;
+			var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
+			return not (neighbours.includes(self.targetAttendee) and self.wish.literal == "Dislike");
+		}
+		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
+				+ " is sitting next to someone they dislike"
+	}
+	
+	critique AttendeeSatWithLike {
+		guard: self.satisfies('AttendeeIsNotSelf')
+		check {
+			if (self.wish.literal == "Like"){
+				var selfSeat = self.sourceAttendee.mySeat;
+				var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
+				return neighbours.includes(self.targetAttendee);
+			} else {return true;}
+		}
+		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
+				+ " isn't sitting next to someone they liked"
+	}
+	
+//	constraint DifferentWishesOnSamePerson {
+//	}
 
 }
 
@@ -363,7 +383,7 @@ context FoodAllergy {
 		fix {
 			title: "Set allergy name"
 			do {
-				name = System.user.prompt("Input allergy name");
+				var name = System.user.prompt("Input allergy name");
 				if (name.isDefined()) self.foodAllergyName = name;
 			}
 		}

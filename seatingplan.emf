@@ -13,21 +13,20 @@ class SeatingPlan{
 }
 
 
-@gmf.node(label="tableID")
+@gmf.node(label="tableName")
 class Table{
 	attr int tableID;
-	attr String tableName;
 	attr int capacity;
 	
 	@gmf.compartment
-	val Seat[+]#aSeat seats;
+	val Seat[+]#myTable seats;
 }
 
 
 @gmf.node(label="index")
 class Seat {
 	attr int index;
-	ref Table#seats aSeat;
+	ref Table#seats myTable;
 	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee#mySeat attendeeSeat;
@@ -49,15 +48,18 @@ class Attendee {
 	ref FoodAllergy[*] foodAllergies;
 	
 	@gmf.compartment
-	val AttendeeWish[*] anttendeeWishes;
+	val AttendeeWish[*]#sourceAttendee anttendeeWishes;
 }
 
 
 @gmf.node(label="wish")
 class AttendeeWish {
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	ref Attendee#anttendeeWishes sourceAttendee;
 
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee targetAttendee;
+	
 	attr Feeling wish;
 }
 
