@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="ASCII"?>
-<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan"/>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_vVkTcPvYEemu5vAyyeEKOQ">
+  <tables xmi:id="_PIGQ8PvZEemu5vAyyeEKOQ"/>
+</SeatingPlan>

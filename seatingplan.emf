@@ -15,7 +15,7 @@ class SeatingPlan{
 
 @gmf.node(label="tableID")
 class Table{
-	readonly unique attr int tableID;
+	attr int tableID;
 	attr int capacity;
 	
 	@gmf.compartment
@@ -25,7 +25,8 @@ class Table{
 
 @gmf.node(label="index")
 class Seat {
-	readonly unique attr int index;
+	attr int index;	
+	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee attendeeSeat;
 }
@@ -33,7 +34,7 @@ class Seat {
 
 @gmf.node(label="lastName")
 class Attendee {
-	readonly unique attr int attendeeID;
+	attr int attendeeID;
 	attr String firstName;
 	attr String lastName;
 	attr String affiliation;

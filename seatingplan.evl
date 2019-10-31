@@ -55,7 +55,21 @@ context SeatingPlan {
 
 context Attendee {
 
+	constraint HasAttendeeID {
+		check: self.attendeeID.isDefined()
+		fix {
+			title: "Auto generating attendee ID"
+			do {
+				var i =0;
+				for (a in SeatingPlan.attendees){
+					a.attendeeID = i;
+				}
+			}
+		}
+	}
+
   constraint HasFirstAndLastName {
+  		guard: self.satisfies('HasAttendeeID')
       	check : self.firstName.isDefined() and self.lastName.isDefined()
       	message : 'Attendee "' + self.eClass().name + '" must have a first name and a second name'
 		fix {

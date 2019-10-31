@@ -9,8 +9,8 @@
 	
 	[% for (a in attendee.spokenLanguages) { %]
 	<tr>
-		<td>[%=a%]<td>
-	<tr>
+		<td>[%=a%]</td>
+	</tr>
 	[% } %]
 	
 </table> 
