@@ -1,3 +1,14 @@
+pre {
+	var tables = Table.all;
+	var i = 0; 
+  	for (el in tables) {
+  		el.tableID = i; i += 1;
+  	}
+  	
+}
+
+
+
 context SeatingPlan {
 
   constraint HasName {
@@ -30,8 +41,16 @@ context SeatingPlan {
   
  constraint TableIdUnique {
  		guard: self.satisfies('NameStartsWithCapital')
-		check: self.tables.tableID == self.tables.tableID.asSet()
-		message: "All seated attendees must be unique, the same person cannot sit in two places"
+		check: self.tables.tableID.size() == self.tables.tableID.asSet().size()
+		message: "All table IDs must be unique"
+		fix {
+			title: "Auto-generate IDs for all the tables"
+			do {
+				var i = 0; 
+          		for (el in self.tables) {
+          			el.tableID = i; i += 1;}
+			}
+		}
 }
  
   
@@ -41,7 +60,7 @@ context SeatingPlan {
 		check {
 			var seatedAttendees = self.tables.collect(t | t.seats.attendeeSeat);
   			var duplicatePeople = seatedAttendees - seatedAttendees.asSet();
-			return duplicatePeople.size() > 0;
+			return duplicatePeople.size() == 0;
 		}
 		
 		message: "All seated attendees must be unique, the same person cannot sit in two places"
@@ -74,14 +93,14 @@ context Attendee {
           do {
           
           		if (not self.firstName.isDefined()) {
-          			var firstName := System.user.prompt('Input First Name');}
+          			var firstName := System.user.prompt('Input First Name');
+          			if (firstName.isDefined()) self.firstName := firstName;
+          		}
           		
           		if (not self.lastName.isDefined()) {
-          			var lastName := System.user.prompt('Input Last Name');}
-
-              	if (firstName.isDefined()) self.firstName := firstName;
-              	if (lastName.isDefined()) self.lastName := lastName;
-
+          			var lastName := System.user.prompt('Input Last Name');
+          			if (lastName.isDefined()) self.lastName := lastName;
+          		}
           }
 
       }
@@ -95,7 +114,9 @@ context Attendee {
   		check : self.firstName.firstToUpperCase() = self.firstName and
   				self.lastName.firstToUpperCase() = self.lastName
   		
-  		message : "First Name: '" + self.firstName + "' and Last Name: '" + self.lastName + "' should start with an upper-cases"
+  		message : "First Name: '" + self.firstName + 
+  					"' and Last Name: '" + self.lastName + 
+  					"' both should start with an upper-case"
   		
   		fix {
 
@@ -120,8 +141,18 @@ context Attendee {
   			title: "Add a spoken language for " + self.firstName + " " + self.lastName 
   			
   			do {
-  				var chosenLanguages = System.user.chooseMany("Choose languages", SeatingPlan.languages);
-				if (chosenLanguages.size() > 0) self.spokenLanguages.add(chosenLanguages);
+  				if (Language.All.size() > 0){
+  					var chosenLanguages = System.user.chooseMany("Choose languages", Language.All);
+  					if (chosenLanguage.isTypeOf(Language).println()) {
+  						self.spokenLanguages.add(chosenLanguages);
+  					}
+					if (chosenLanguages.size() > 0){
+						self.spokenLanguages.add(chosenLanguages);
+					} 
+  				} else {
+  					System.user.inform("There are no languages instatiated. Please add a language to the Model first.");
+  				}
+  				
   			}
   		}	
   		
@@ -140,7 +171,7 @@ context Table {
           title : 'Creating unique IDs for all the tables'
           do {
           		var i = 0; 
-          		for (el in Table.all) {
+          		for (el in self.parent.tables) {
           			el.tableID = i; i += 1;}
           }
       }
@@ -180,11 +211,18 @@ context Table {
 				}
 				
 				if (option == "Add seat"){
-					var newSeat = new Seat;
-					Seat.index = 1;
-					var chosenAttendee = System.user.choose("Choose attendee", SeatingPlan.attendees);
-					if (chosenAttendee.isDefined()) Seat.attendeeSeat = chosenAttendee;
-					self.seats.add(newSeat);
+					if (Attendee.all.size() > 0){
+						var newSeat = new Seat;
+						newSeat.index = 1;
+						var chosenAttendee = System.user.choose("Choose attendee", Attendee.all);
+						if (chosenAttendee.isDefined()) {
+							newSeat.attendeeSeat = chosenAttendee;
+							self.children.add(newSeat);
+							self.seats.add(newSeat);
+						} else {
+							System.user.inform("You must choose an attendee");}
+					} else {
+						System.user.inform("There are no attendees created. Please add an attendee first");}
 				}
 			
 			}
@@ -296,11 +334,24 @@ context Language {
 		fix {
 			title: "Set language name"
 			do {
-				name = System.user.prompt("Input language name");
+				var name = System.user.prompt("Input language name");
 				if (name.isDefined()) self.languageName = name;
 			}
 		}	
 	}
+	
+	critique NameStartsWithCapital  {
+  		guard : self.satisfies('IsDefined')
+  		check : self.languageName.firstToUpperCase() = self.languageName
+  		message : 'Language Name "' + self.languageName +
+          '" should start with an upper-case letter'
+  		fix {
+          title : 'Rename to ' + self.languageName.firstToUpperCase()
+          do {
+              self.languageName := self.languageName.firstToUpperCase();
+          }
+      }
+  }
 
 }
 
@@ -317,4 +368,17 @@ context FoodAllergy {
 			}
 		}
 	}
+	
+	critique NameStartsWithCapital  {
+  		guard : self.satisfies('IsDefined')
+  		check : self.foodAllergyName.firstToUpperCase() = self.foodAllergyName
+  		message : 'Allergy Name "' + self.foodAllergyName +
+          '" should start with an upper-case letter'
+  		fix {
+          title : 'Rename to ' + self.foodAllergyName.firstToUpperCase()
+          do {
+              self.foodAllergyName := self.foodAllergyName.firstToUpperCase();
+          }
+      }
+  }
 }

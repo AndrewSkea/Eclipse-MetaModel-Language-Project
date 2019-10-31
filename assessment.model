@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_pY3YkPvlEemake9kWTS1JQ">
-  <tables xmi:id="_qJkcwPvlEemake9kWTS1JQ"/>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_L3uYcPvxEemMx7nxhkIu9w" seatingPlanName="My Conf">
+  <tables xmi:id="_MqTE4PvxEemMx7nxhkIu9w"/>
+  <attendees xmi:id="_Rvxw8PvxEemMx7nxhkIu9w"/>
 </SeatingPlan>

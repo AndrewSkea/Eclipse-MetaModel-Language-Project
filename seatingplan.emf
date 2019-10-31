@@ -16,19 +16,21 @@ class SeatingPlan{
 @gmf.node(label="tableID")
 class Table{
 	attr int tableID;
+	attr String tableName;
 	attr int capacity;
 	
 	@gmf.compartment
-	val Seat[+] seats;
+	val Seat[+]#aSeat seats;
 }
 
 
 @gmf.node(label="index")
 class Seat {
-	attr int index;	
+	attr int index;
+	ref Table#seats aSeat;
 	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
-	ref Attendee attendeeSeat;
+	ref Attendee#mySeat attendeeSeat;
 }
 
 
@@ -38,6 +40,7 @@ class Attendee {
 	attr String firstName;
 	attr String lastName;
 	attr String affiliation;
+	ref Seat#attendeeSeat mySeat;
 	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Language[+] spokenLanguages;
