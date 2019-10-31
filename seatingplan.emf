@@ -55,8 +55,6 @@ class AttendeeWish {
 
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee targetAttendee;
-	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	attr Feeling wish;
 }
 

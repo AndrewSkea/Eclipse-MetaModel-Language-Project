@@ -30,11 +30,8 @@ context SeatingPlan {
   
  constraint TableIdUnique {
  		guard: self.satisfies('NameStartsWithCapital')
-		
 		check: self.tables.tableID == self.tables.tableID.asSet()
-		
 		message: "All seated attendees must be unique, the same person cannot sit in two places"
-
 }
  
   
@@ -321,14 +318,3 @@ context FoodAllergy {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
