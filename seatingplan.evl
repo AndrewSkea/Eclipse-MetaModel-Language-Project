@@ -191,7 +191,7 @@ context Attendee {
 		check {
 			for (attWish in self.anttendeeWishes){
 				var dup = self.anttendeeWishes.select(aW | aW.targetAttendee == attWish.targetAttendee).wish.literal;
-				if (dup.println().size() > 1){
+				if (dup.size() > 1){
 					if (dup.includes("Like") and dup.includes("Dislike")){
 						return false;
 					}
@@ -199,6 +199,20 @@ context Attendee {
 			} return true;
 		}
 		message: self.firstName + " " + self.lastName + " has conflicting wishes for the same person"
+		fix {
+			title: "Remove conflicting wishes"
+			do {
+				var newAttendeeList: Sequence;
+				var aWishNumbers = self.anttendeeWishes.aggregate(aW | aW.targetAttendee, self.anttendeeWishes.select(aW2 | aW2.targetAttendee == aW.targetAttendee)).println();
+				for (attendee in aWishNumbers.keySet()){
+					if (aWishNumbers.get(attendee).println() > 1){
+						var choice = System.user.choose("Choose Like or Dislike for " + attendee.firstName + " " + attendee.lastName, Sequence{"Like", "Dislike"});
+						newAttendeeList.add(self.anttendeeWishes.select(aW | aW.targetAttendee == attendee and aW.wish.literal == choice));
+					} else {newAttendeeList.add(aWishNumbers.get(attendee).println());}
+				}
+				self.anttendeeWishes = newAttendeeList;
+			}
+		}
 	}
   
 }
