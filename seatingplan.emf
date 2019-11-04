@@ -13,7 +13,7 @@ class SeatingPlan{
 }
 
 
-@gmf.node(label="tableName")
+@gmf.node(label="tableID")
 class Table{
 	attr int tableID;
 	attr int capacity;
@@ -26,6 +26,8 @@ class Table{
 @gmf.node(label="index")
 class Seat {
 	attr int index;
+	
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Table#seats myTable;
 	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")
@@ -39,6 +41,8 @@ class Attendee {
 	attr String firstName;
 	attr String lastName;
 	attr String affiliation;
+	
+	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Seat#attendeeSeat mySeat;
 	
 	@gmf.link(width="2", source.decoration="arrow", style="solid")

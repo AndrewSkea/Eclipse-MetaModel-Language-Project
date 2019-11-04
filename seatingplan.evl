@@ -173,15 +173,37 @@ context Attendee {
   				
   			}
   		}	
-  		
+  }
+  
+  constraint SeatIsDefined {
+  		guard: self.satisfies('HasLanguage')
+  		check: self.mySeat.isDefined()
+  		message: self.firstName + " " + self.lastName + " must have a allocated seat."
+  		fix {
+  			title: "Choose a seat for the attendee"
+  			do {
+  				var chosenTable = System.user.choose("Choose which table", Table.All);
+  				
+  				if (chosenTable.isDefined()){
+  					var availableSeats = chosenTable.seats.select(s | not s.attendeeSeat.isDefined());
+  					if (availableSeats.size() > 0){
+  						var chosenSeat = System.user.choose("Choose which seat", availableSeats);
+  						if (chosenSeat.isDefined()) self.mySeat = chosenSeat;	
+  					}
+  					else System.user.inform("There are no available seats at this table. Add a seat to assign this attendee.");
+  				}
+  			}
+  		}
   }
   
   constraint AttendeeSatWithLanguage {
-		guard: self.satisfies('HasLanguage')
+		guard: self.satisfies('SeatIsDefined')
 		check {
 			var selfSeat = self.mySeat;
-			var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
-			return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));
+			var neighbours = selfSeat.myTable.seats.select(s | s.attendeeSeat.isDefined() and (s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1)).attendeeSeat;
+			if (neighbours.size() > 0){
+				return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));}
+			else {return false;}
 		}
 		message: self.firstName + " " + self.lastName + " isn't sitting next to someone that can speak their language"
 	}
@@ -203,12 +225,15 @@ context Attendee {
 			title: "Remove conflicting wishes"
 			do {
 				var newAttendeeList: Sequence;
-				var aWishNumbers = self.anttendeeWishes.aggregate(aW | aW.targetAttendee, self.anttendeeWishes.select(aW2 | aW2.targetAttendee == aW.targetAttendee)).println();
+				var aWishNumbers = self.anttendeeWishes.aggregate(aW | aW.targetAttendee, self.anttendeeWishes.select(aW2 | aW2.targetAttendee == aW.targetAttendee));
+				
 				for (attendee in aWishNumbers.keySet()){
-					if (aWishNumbers.get(attendee).println() > 1){
+				
+					if (aWishNumbers.get(attendee) > 1){
 						var choice = System.user.choose("Choose Like or Dislike for " + attendee.firstName + " " + attendee.lastName, Sequence{"Like", "Dislike"});
-						newAttendeeList.add(self.anttendeeWishes.select(aW | aW.targetAttendee == attendee and aW.wish.literal == choice));
-					} else {newAttendeeList.add(aWishNumbers.get(attendee).println());}
+						self.anttendeeWishes = self.anttendeeWishes.reject(aW | aw.targetAttendee == attendee);
+						self.anttendeeWishes.add(new AttendeeWish(sourceAttendee=self, targetAttendee = attendee, wish=choice));
+					}
 				}
 				self.anttendeeWishes = newAttendeeList;
 			}
@@ -350,11 +375,11 @@ context AttendeeWish {
 		guard: self.satisfies('AttendeeIsNotSelf')
 		check {
 			var selfSeat = self.sourceAttendee.mySeat;
-			var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
+			var neighbours = selfSeat.myTable.seats.attendeeSeat;
 			return not (neighbours.includes(self.targetAttendee) and self.wish.literal == "Dislike");
 		}
 		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
-				+ " is sitting next to someone they dislike"
+				+ " is sitting on a table with someone they dislike"
 	}
 	
 	critique AttendeeSatWithLike {
@@ -362,12 +387,12 @@ context AttendeeWish {
 		check {
 			if (self.wish.literal == "Like"){
 				var selfSeat = self.sourceAttendee.mySeat;
-				var neighbours = selfSeat.myTable.seats.select(s | s.index == selfSeat.index + 1 or s.index == selfSeat.index - 1).attendeeSeat;
+				var neighbours = selfSeat.myTable.seats.attendeeSeat;
 				return neighbours.includes(self.targetAttendee);
 			} else {return true;}
 		}
 		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
-				+ " isn't sitting next to someone they liked"
+				+ " isn't sitting on the same table as someone they liked"
 	}
 }
 

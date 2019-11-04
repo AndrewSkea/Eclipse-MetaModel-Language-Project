@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_DsbM0P1jEemOrrjehQmJEA" seatingPlanName="My Conf">
+  <tables xmi:id="_F9cNMP1jEemOrrjehQmJEA" capacity="10">
+    <seats xmi:id="_zxboYP1lEemOrrjehQmJEA" index="1" attendeeSeat="_FWceoP1jEemOrrjehQmJEA"/>
+    <seats xmi:id="_00bWcP1lEemOrrjehQmJEA" attendeeSeat="_EsVxsP1jEemOrrjehQmJEA"/>
+    <seats xmi:id="_ZmWe0P8WEemOrrjehQmJEA" attendeeSeat="_bsFcQP8WEemOrrjehQmJEA"/>
+  </tables>
+  <tables xmi:id="_hTRHMP8WEemOrrjehQmJEA" tableID="1">
+    <seats xmi:id="_hxbC0P8WEemOrrjehQmJEA"/>
+  </tables>
+  <languages xmi:id="_QbdrQP1jEemOrrjehQmJEA" languageName="English"/>
+  <languages xmi:id="_RdJKsP1jEemOrrjehQmJEA" languageName="French"/>
+  <languages xmi:id="_V-6v8P1nEemOrrjehQmJEA" languageName="Chinese"/>
+  <attendees xmi:id="_EsVxsP1jEemOrrjehQmJEA" firstName="Andrew" lastName="Skea" mySeat="_00bWcP1lEemOrrjehQmJEA" spokenLanguages="_QbdrQP1jEemOrrjehQmJEA _RdJKsP1jEemOrrjehQmJEA">
+    <anttendeeWishes xmi:id="_kej-gP8WEemOrrjehQmJEA" targetAttendee="_bsFcQP8WEemOrrjehQmJEA" wish="Dislike"/>
+  </attendees>
+  <attendees xmi:id="_FWceoP1jEemOrrjehQmJEA" firstName="Lauren" lastName="Wickins" mySeat="_zxboYP1lEemOrrjehQmJEA" spokenLanguages="_RdJKsP1jEemOrrjehQmJEA _V-6v8P1nEemOrrjehQmJEA">
+    <anttendeeWishes xmi:id="_mZA5AP8WEemOrrjehQmJEA" targetAttendee="_EsVxsP1jEemOrrjehQmJEA"/>
+  </attendees>
+  <attendees xmi:id="_bsFcQP8WEemOrrjehQmJEA" firstName="And2" lastName="Skea2" affiliation="None" mySeat="_ZmWe0P8WEemOrrjehQmJEA" spokenLanguages="_QbdrQP1jEemOrrjehQmJEA">
+    <anttendeeWishes xmi:id="_nvHwUP8WEemOrrjehQmJEA" targetAttendee="_FWceoP1jEemOrrjehQmJEA"/>
+  </attendees>
+</SeatingPlan>
