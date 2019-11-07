@@ -13,7 +13,7 @@ class SeatingPlan{
 }
 
 
-@gmf.node(label="tableID")
+@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}")
 class Table{
 	attr int tableID;
 	attr int capacity;
@@ -23,58 +23,48 @@ class Table{
 }
 
 
-@gmf.node(label="index")
+@gmf.node(label="index", label.pattern="Seat {0}")
 class Seat {
 	attr int index;
-	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Table#seats myTable;
 	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	@gmf.link(width="2", source.decoration="filledsquare", style="solid")
 	ref Attendee#mySeat attendeeSeat;
 }
 
 
-@gmf.node(label="lastName")
+@gmf.node(label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
 class Attendee {
 	attr int attendeeID;
 	attr String firstName;
 	attr String lastName;
 	attr String affiliation;
-	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Seat#attendeeSeat mySeat;
 	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	@gmf.link(width="1", source.decoration="rhomb", style="dash")
 	ref Language[+] spokenLanguages;
 	
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
+	@gmf.link(width="1", source.decoration="rhomb", style="dash")
 	ref FoodAllergy[*] foodAllergies;
-	
-	@gmf.compartment
 	val AttendeeWish[*]#sourceAttendee anttendeeWishes;
 }
 
 
-@gmf.node(label="wish")
+@gmf.link(label="wish", source="sourceAttendee", target="targetAttendee", style="dot", width="2", color="0,0,255")
 class AttendeeWish {
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee#anttendeeWishes sourceAttendee;
-
-	@gmf.link(width="2", source.decoration="arrow", style="solid")
 	ref Attendee targetAttendee;
-	
 	attr Feeling wish;
 }
 
 
-@gmf.node(label="languageName")
+@gmf.node(label="languageName", label.pattern="Language - {0}")
 class Language {
 	attr String languageName;
 }
 
 
-@gmf.node(label="foodAllergyName")
+@gmf.node(label="foodAllergyName", label.pattern="Food Allergy - {0}")
 class FoodAllergy {
 	attr String foodAllergyName;
 }

@@ -1,0 +1,22 @@
+-- Find the compartment figure
+var clazzAttributesCompartmentFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'ClazzAttributesCompartmentFigure');
+
+-- ... and add a stack layout to it
+clazzAttributesCompartmentFigure.layout = new GmfGraph!StackLayout;
+
+-- Find the attribute figure
+var attributeFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'AttributeFigure');
+
+-- ... delete its border
+delete attributeFigure.border;
+
+-- ... set its outline to false
+attributeFigure.outline = false;
+
+-- ... and add a preferred size to it
+var preferredSize = new GmfGraph!Dimension;
+preferredSize.dx = 100;
+preferredSize.dy = 16;
+attributeFigure.preferredSize = preferredSize;

@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="ASCII"?>
-<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_DsbM0P1jEemOrrjehQmJEA" seatingPlanName="My Conf">
-  <tables xmi:id="_F9cNMP1jEemOrrjehQmJEA" capacity="10">
-    <seats xmi:id="_zxboYP1lEemOrrjehQmJEA" index="1" attendeeSeat="_FWceoP1jEemOrrjehQmJEA"/>
-    <seats xmi:id="_00bWcP1lEemOrrjehQmJEA" attendeeSeat="_EsVxsP1jEemOrrjehQmJEA"/>
-    <seats xmi:id="_ZmWe0P8WEemOrrjehQmJEA" attendeeSeat="_bsFcQP8WEemOrrjehQmJEA"/>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_oWgToP_KEemOrrjehQmJEA" seatingPlanName="My Conference">
+  <tables xmi:id="_pZQKEP_KEemOrrjehQmJEA" capacity="10">
+    <seats xmi:id="_11YGsAFCEeqq_4VOYOhBLw" attendeeSeat="_yuVpEACZEeq_-5juVtworA"/>
+    <seats xmi:id="_2IdawAFCEeqq_4VOYOhBLw" index="1" attendeeSeat="_x_MEEACZEeq_-5juVtworA"/>
+    <seats xmi:id="_2XG6wAFCEeqq_4VOYOhBLw" index="2"/>
+    <seats xmi:id="_2lNoMAFCEeqq_4VOYOhBLw" index="3"/>
+    <seats xmi:id="_24X0wAFCEeqq_4VOYOhBLw" index="4" attendeeSeat="_3SEuMAFCEeqq_4VOYOhBLw"/>
   </tables>
-  <tables xmi:id="_hTRHMP8WEemOrrjehQmJEA" tableID="1">
-    <seats xmi:id="_hxbC0P8WEemOrrjehQmJEA"/>
+  <tables xmi:id="_ClqeUAFvEeqCdrUiovd_ng" tableID="1" capacity="10">
+    <seats xmi:id="_DIISMAFvEeqCdrUiovd_ng" attendeeSeat="_3qVdMAFCEeqq_4VOYOhBLw"/>
+    <seats xmi:id="_r9xZgAFwEeqCdrUiovd_ng" index="1"/>
   </tables>
-  <languages xmi:id="_QbdrQP1jEemOrrjehQmJEA" languageName="English"/>
-  <languages xmi:id="_RdJKsP1jEemOrrjehQmJEA" languageName="French"/>
-  <languages xmi:id="_V-6v8P1nEemOrrjehQmJEA" languageName="Chinese"/>
-  <attendees xmi:id="_EsVxsP1jEemOrrjehQmJEA" firstName="Andrew" lastName="Skea" mySeat="_00bWcP1lEemOrrjehQmJEA" spokenLanguages="_QbdrQP1jEemOrrjehQmJEA _RdJKsP1jEemOrrjehQmJEA">
-    <anttendeeWishes xmi:id="_kej-gP8WEemOrrjehQmJEA" targetAttendee="_bsFcQP8WEemOrrjehQmJEA" wish="Dislike"/>
+  <languages xmi:id="_zic9oAFJEeqq_4VOYOhBLw" languageName="English"/>
+  <languages xmi:id="_zic9oQFJEeqq_4VOYOhBLw" languageName="French"/>
+  <allergies xmi:id="_Bvu74AFvEeqCdrUiovd_ng" foodAllergyName="Nuts"/>
+  <allergies xmi:id="_Bvu74QFvEeqCdrUiovd_ng" foodAllergyName="Wheat"/>
+  <attendees xmi:id="_x_MEEACZEeq_-5juVtworA" firstName="Bob" lastName="Skea2" mySeat="_2IdawAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw _zic9oQFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng"/>
+  <attendees xmi:id="_yuVpEACZEeq_-5juVtworA" attendeeID="1" firstName="Andrew" lastName="Skea" mySeat="_11YGsAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng"/>
+  <attendees xmi:id="_3SEuMAFCEeqq_4VOYOhBLw" attendeeID="2" firstName="Lauren" lastName="Wickins" mySeat="_24X0wAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74QFvEeqCdrUiovd_ng"/>
+  <attendees xmi:id="_3qVdMAFCEeqq_4VOYOhBLw" attendeeID="3" firstName="Johnathon sdfhja;lskdjf;alksdjf;alksdj sdjflasdjfaklsdjfkkjjk" lastName="Wick" mySeat="_DIISMAFvEeqCdrUiovd_ng" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw">
+    <anttendeeWishes xmi:id="_FLWHIAFvEeqCdrUiovd_ng" targetAttendee="_yuVpEACZEeq_-5juVtworA" wish="Dislike"/>
   </attendees>
-  <attendees xmi:id="_FWceoP1jEemOrrjehQmJEA" firstName="Lauren" lastName="Wickins" mySeat="_zxboYP1lEemOrrjehQmJEA" spokenLanguages="_RdJKsP1jEemOrrjehQmJEA _V-6v8P1nEemOrrjehQmJEA">
-    <anttendeeWishes xmi:id="_mZA5AP8WEemOrrjehQmJEA" targetAttendee="_EsVxsP1jEemOrrjehQmJEA"/>
-  </attendees>
-  <attendees xmi:id="_bsFcQP8WEemOrrjehQmJEA" firstName="And2" lastName="Skea2" affiliation="None" mySeat="_ZmWe0P8WEemOrrjehQmJEA" spokenLanguages="_QbdrQP1jEemOrrjehQmJEA">
-    <anttendeeWishes xmi:id="_nvHwUP8WEemOrrjehQmJEA" targetAttendee="_FWceoP1jEemOrrjehQmJEA"/>
-  </attendees>
+  <attendees xmi:id="_39QZMAFCEeqq_4VOYOhBLw" attendeeID="4" firstName="Elvis" lastName="Doe" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw _zic9oQFJEeqq_4VOYOhBLw"/>
 </SeatingPlan>

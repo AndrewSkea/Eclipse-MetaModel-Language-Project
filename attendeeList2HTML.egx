@@ -1,0 +1,22 @@
+pre { "Transformation starting".println(); }
+rule AttendeeList2HTML
+	transform seatingPlan : SeatingPlan {
+	guard : seatingPlan.attendees.size() > 0
+	template : "attendeeList2HTML.egl"
+	parameters {
+		var attendees = seatingPlan.attendees.clone();
+		for (at in attendees){
+			if (not at.lastName.isDefined()){at.lastName = "N/A";}
+			if (not at.firstName.isDefined()){at.firstName = "N/A";}
+			if (at.mySeat.isDefined()){
+				at.~tmpMySeat = at.mySeat.index;
+				if (at.mySeat.myTable.isDefined()){
+					at.~myTable = at.mySeat.myTable.tableID;
+				} else {at.~myTable = "N/A";}
+			} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
+		}
+		var map = Map{"attendees"=attendees};
+		return map;
+	} 
+	target : "attendeeList.html"
+}
