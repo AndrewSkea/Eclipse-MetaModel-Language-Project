@@ -2,24 +2,32 @@
 <SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_oWgToP_KEemOrrjehQmJEA" seatingPlanName="My Conference">
   <tables xmi:id="_pZQKEP_KEemOrrjehQmJEA" capacity="10">
     <seats xmi:id="_11YGsAFCEeqq_4VOYOhBLw" attendeeSeat="_yuVpEACZEeq_-5juVtworA"/>
-    <seats xmi:id="_2IdawAFCEeqq_4VOYOhBLw" index="1" attendeeSeat="_x_MEEACZEeq_-5juVtworA"/>
-    <seats xmi:id="_2XG6wAFCEeqq_4VOYOhBLw" index="2"/>
-    <seats xmi:id="_2lNoMAFCEeqq_4VOYOhBLw" index="3"/>
-    <seats xmi:id="_24X0wAFCEeqq_4VOYOhBLw" index="4" attendeeSeat="_3SEuMAFCEeqq_4VOYOhBLw"/>
+    <seats xmi:id="_2IdawAFCEeqq_4VOYOhBLw" index="1"/>
+    <seats xmi:id="_2XG6wAFCEeqq_4VOYOhBLw" index="2" attendeeSeat="_39QZMAFCEeqq_4VOYOhBLw"/>
+    <seats xmi:id="_2lNoMAFCEeqq_4VOYOhBLw" index="3" attendeeSeat="_3SEuMAFCEeqq_4VOYOhBLw"/>
+    <seats xmi:id="_24X0wAFCEeqq_4VOYOhBLw" index="4"/>
   </tables>
   <tables xmi:id="_ClqeUAFvEeqCdrUiovd_ng" tableID="1" capacity="10">
     <seats xmi:id="_DIISMAFvEeqCdrUiovd_ng" attendeeSeat="_3qVdMAFCEeqq_4VOYOhBLw"/>
-    <seats xmi:id="_r9xZgAFwEeqCdrUiovd_ng" index="1"/>
+    <seats xmi:id="_r9xZgAFwEeqCdrUiovd_ng" index="1" attendeeSeat="_x_MEEACZEeq_-5juVtworA"/>
   </tables>
   <languages xmi:id="_zic9oAFJEeqq_4VOYOhBLw" languageName="English"/>
   <languages xmi:id="_zic9oQFJEeqq_4VOYOhBLw" languageName="French"/>
   <allergies xmi:id="_Bvu74AFvEeqCdrUiovd_ng" foodAllergyName="Nuts"/>
   <allergies xmi:id="_Bvu74QFvEeqCdrUiovd_ng" foodAllergyName="Wheat"/>
-  <attendees xmi:id="_x_MEEACZEeq_-5juVtworA" firstName="Bob" lastName="Skea2" mySeat="_2IdawAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw _zic9oQFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng"/>
-  <attendees xmi:id="_yuVpEACZEeq_-5juVtworA" attendeeID="1" firstName="Andrew" lastName="Skea" mySeat="_11YGsAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng"/>
-  <attendees xmi:id="_3SEuMAFCEeqq_4VOYOhBLw" attendeeID="2" firstName="Lauren" lastName="Wickins" mySeat="_24X0wAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74QFvEeqCdrUiovd_ng"/>
-  <attendees xmi:id="_3qVdMAFCEeqq_4VOYOhBLw" attendeeID="3" firstName="Johnathon sdfhja;lskdjf;alksdjf;alksdj sdjflasdjfaklsdjfkkjjk" lastName="Wick" mySeat="_DIISMAFvEeqCdrUiovd_ng" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw">
+  <attendees xmi:id="_x_MEEACZEeq_-5juVtworA" firstName="Bob" lastName="Skea2" mySeat="_r9xZgAFwEeqCdrUiovd_ng" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng"/>
+  <attendees xmi:id="_yuVpEACZEeq_-5juVtworA" attendeeID="1" firstName="Andrew" lastName="Skea" mySeat="_11YGsAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oQFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng _Bvu74QFvEeqCdrUiovd_ng">
+    <anttendeeWishes xmi:id="_JTAkAAIHEeqEjPGYKr2FIA" targetAttendee="_39QZMAFCEeqq_4VOYOhBLw" wish="Dislike"/>
+    <anttendeeWishes xmi:id="_K1qCgAIHEeqEjPGYKr2FIA" targetAttendee="_3SEuMAFCEeqq_4VOYOhBLw"/>
+  </attendees>
+  <attendees xmi:id="_3SEuMAFCEeqq_4VOYOhBLw" attendeeID="2" firstName="Lauren" lastName="Wickins" mySeat="_2lNoMAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oQFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74QFvEeqCdrUiovd_ng">
+    <anttendeeWishes xmi:id="_IEbRAAIHEeqEjPGYKr2FIA" targetAttendee="_3qVdMAFCEeqq_4VOYOhBLw"/>
+  </attendees>
+  <attendees xmi:id="_3qVdMAFCEeqq_4VOYOhBLw" attendeeID="3" firstName="John" lastName="Wick" mySeat="_DIISMAFvEeqCdrUiovd_ng" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw" foodAllergies="_Bvu74AFvEeqCdrUiovd_ng">
     <anttendeeWishes xmi:id="_FLWHIAFvEeqCdrUiovd_ng" targetAttendee="_yuVpEACZEeq_-5juVtworA" wish="Dislike"/>
   </attendees>
-  <attendees xmi:id="_39QZMAFCEeqq_4VOYOhBLw" attendeeID="4" firstName="Elvis" lastName="Doe" spokenLanguages="_zic9oAFJEeqq_4VOYOhBLw _zic9oQFJEeqq_4VOYOhBLw"/>
+  <attendees xmi:id="_39QZMAFCEeqq_4VOYOhBLw" attendeeID="4" firstName="Elvis" lastName="Presley" mySeat="_2XG6wAFCEeqq_4VOYOhBLw" spokenLanguages="_zic9oQFJEeqq_4VOYOhBLw">
+    <anttendeeWishes xmi:id="_NhFG8AIHEeqEjPGYKr2FIA" wish="Dislike"/>
+    <anttendeeWishes xmi:id="_6unJkALOEeqyxuXNFYR6Og" targetAttendee="_3qVdMAFCEeqq_4VOYOhBLw"/>
+  </attendees>
 </SeatingPlan>

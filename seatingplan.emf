@@ -13,17 +13,19 @@ class SeatingPlan{
 }
 
 
-@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}")
+@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", 
+	color="64,217,255", border.width="3", label.icon="false")
 class Table{
 	attr int tableID;
 	attr int capacity;
 	
-	@gmf.compartment
+	@gmf.affixed
 	val Seat[+]#myTable seats;
 }
 
 
-@gmf.node(label="index", label.pattern="Seat {0}")
+@gmf.node(label="index", label.pattern="Seat {0}", color="255,247,184", resizable="false",
+		figure="ellipse", size="100,75", border.width="2", label.icon="false")
 class Seat {
 	attr int index;
 	ref Table#seats myTable;
@@ -32,8 +34,9 @@ class Seat {
 	ref Attendee#mySeat attendeeSeat;
 }
 
-
-@gmf.node(label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
+@gmf.node(figure="svg", label.icon="false", size="120,120", border.style="solid", border.width="1",
+		svg.uri="platform:/plugin/assessment/images/Person.svg", label.placement="external", resizable="false",
+		 label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
 class Attendee {
 	attr int attendeeID;
 	attr String firstName;
@@ -41,16 +44,15 @@ class Attendee {
 	attr String affiliation;
 	ref Seat#attendeeSeat mySeat;
 	
-	@gmf.link(width="1", source.decoration="rhomb", style="dash")
 	ref Language[+] spokenLanguages;
-	
-	@gmf.link(width="1", source.decoration="rhomb", style="dash")
 	ref FoodAllergy[*] foodAllergies;
+	
+	@gmf.affixed
 	val AttendeeWish[*]#sourceAttendee anttendeeWishes;
 }
 
 
-@gmf.link(label="wish", source="sourceAttendee", target="targetAttendee", style="dot", width="2", color="0,0,255")
+@gmf.node(label="wish", label.pattern="{0}", color="255,211,184", border.width="2", resizable="false")
 class AttendeeWish {
 	ref Attendee#anttendeeWishes sourceAttendee;
 	ref Attendee targetAttendee;
@@ -58,13 +60,13 @@ class AttendeeWish {
 }
 
 
-@gmf.node(label="languageName", label.pattern="Language - {0}")
+@gmf.node(label="languageName", label.pattern="Language - {0}", color="238,184,255", border.width="2", resizable="false")
 class Language {
 	attr String languageName;
 }
 
 
-@gmf.node(label="foodAllergyName", label.pattern="Food Allergy - {0}")
+@gmf.node(label="foodAllergyName", label.pattern="Food Allergy - {0}", color="184,217,255", border.width="2", resizable="false")
 class FoodAllergy {
 	attr String foodAllergyName;
 }

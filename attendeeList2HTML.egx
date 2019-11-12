@@ -1,22 +1,29 @@
+import "tools.eol";
 pre { "Transformation starting".println(); }
+
 rule AttendeeList2HTML
 	transform seatingPlan : SeatingPlan {
 	guard : seatingPlan.attendees.size() > 0
 	template : "attendeeList2HTML.egl"
-	parameters {
-		var attendees = seatingPlan.attendees.clone();
-		for (at in attendees){
-			if (not at.lastName.isDefined()){at.lastName = "N/A";}
-			if (not at.firstName.isDefined()){at.firstName = "N/A";}
-			if (at.mySeat.isDefined()){
-				at.~tmpMySeat = at.mySeat.index;
-				if (at.mySeat.myTable.isDefined()){
-					at.~myTable = at.mySeat.myTable.tableID;
-				} else {at.~myTable = "N/A";}
-			} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
-		}
-		var map = Map{"attendees"=attendees};
-		return map;
-	} 
-	target : "attendeeList.html"
+	parameters: Map{"attendees"=seatingPlan.attendees.makeNACompatiable()}
+	target : "gen/attendeeList.html"
 }
+
+
+rule AttendeeInvitations2HTML
+	transform attendee : Attendee {
+	guard : attendee.mySeat.isDefined() and attendee.mySeat.myTable.isDefined()
+	template : "attendeeInvitation2HTML.egl"
+	parameters {
+		var failedWishes = attendee.GetFailedWishes();
+		return Map{'attendee'=attendee, 
+					'tableAtt'= attendee.mySeat.myTable.seats.attendeeSeat.select(d|d.isDefined()).asOrderedSet().makeNACompatiable(),
+					'failedLikes' = failedWishes.keySet().select(k | failedWishes.get(k).literal=="Like"),
+					'failedDislikes' = failedWishes.keySet().select(k | failedWishes.get(k).literal=="Dislike")
+					};
+	}
+	target : "gen/invitations/" + attendee.lastName + "_" + attendee.firstName + "_" + attendee.attendeeID + ".html"
+}
+
+
+post { "Transformation finished".println(); } 

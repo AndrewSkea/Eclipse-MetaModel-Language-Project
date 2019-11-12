@@ -1,22 +1,49 @@
--- Find the compartment figure
-var clazzAttributesCompartmentFigure = GmfGraph!Rectangle.all.
-    selectOne(r|r.name = 'ClazzAttributesCompartmentFigure');
+// Change Fonts
+findLabel('AttendeeLabelFigure').changeFont(true, false, 10);
+findLabel("SeatLabelFigure").changeFont(false, false, 11);
+findLabel("TableLabelFigure").changeFont(true, false, 15);
+findLabel("LanguageLabelFigure").changeFont(false, true, 10);
+findLabel("FoodAllergyLabelFigure").changeFont(true, true, 10);
 
--- ... and add a stack layout to it
-clazzAttributesCompartmentFigure.layout = new GmfGraph!StackLayout;
+// Centre labels
+findFigure('TableFigure').centreLabel(true, true);
+findFigure('SeatFigure').centreLabel(true, true);
+//findFigure('AttendeeFigure').centreLabel(false, false);
+findFigure('LanguageFigure').centreLabel(true, true);
+findFigure('FoodAllergyFigure').centreLabel(true, true);
 
--- Find the attribute figure
-var attributeFigure = GmfGraph!Rectangle.all.
-    selectOne(r|r.name = 'AttributeFigure');
+// Move label
+findFigure('AttendeeFigure').createInsets(0,0,0,0);
+//af.backgroundColor = new GmfGraph!RGBColor(184,217,255);
 
--- ... delete its border
-delete attributeFigure.border;
+// Operations
+operation findFigure(name: String){
+	return GmfGraph!Figure.all.selectOne(s|s.name == name);
+}
 
--- ... set its outline to false
-attributeFigure.outline = false;
+operation findLabel(name: String){
+	return GmfGraph!Label.all.selectOne(s|s.name == name);
+}
 
--- ... and add a preferred size to it
-var preferredSize = new GmfGraph!Dimension;
-preferredSize.dx = 100;
-preferredSize.dy = 16;
-attributeFigure.preferredSize = preferredSize;
+operation GmfGraph!Figure centreLabel(vertically:Boolean, horizontally:Boolean) {
+	self.layout = new GmfGraph!GridLayout;
+	var label = self.children.first;
+	label.layoutData = new GmfGraph!GridLayoutData;
+	if(vertically) label.layoutData.grabExcessVerticalSpace = true;
+	if(horizontally) label.layoutData.grabExcessHorizontalSpace = true;
+}
+
+operation GmfGraph!Label changeFont(makeBold:Boolean, makeItalics:Boolean, setSize:Integer) {
+	self.font = new GmfGraph!BasicFont;
+	if (makeBold) self.font.style = GmfGraph!FontStyle#BOLD;
+	if (makeItalics) self.font.style = GmfGraph!FontStyle#ITALIC;
+	if (setSize.isDefined()) self.font.height = setSize;
+}
+
+operation GmfGraph!Figure createInsets(top:Integer, bottom:Integer, left:Integer, right:Integer){
+	self.insets = new GmfGraph!Insets;
+	if (top.isDefined()) self.insets.Top = top;
+	if (bottom.isDefined()) self.insets.Bottom = bottom;
+	if (left.isDefined()) self.insets.Left = left;
+	if (right.isDefined()) self.insets.Right = right;
+}

@@ -1,0 +1,49 @@
+operation Seat GetNeighbours(): Sequence {
+	var tableSeats = self.myTable.seats;
+	var returned: Sequence;
+	if (tableSeats.size() > 1){
+	 returned = tableSeats.select(s | s.attendeeSeat.isDefined() 
+						and (s.index == maths.floorMod(self.index+1,tableSeats.size())
+							 or s.index == maths.floorMod(self.index-1,tableSeats.size()))).attendeeSeat;}
+	return returned;
+}
+
+
+operation OrderedSet makeNACompatiable(): OrderedSet {
+	var attendees = self.clone();
+	for (at in attendees){
+		if (not at.lastName.isDefined()){at.lastName = "N/A";}
+		if (not at.firstName.isDefined()){at.firstName = "N/A";}
+		if (at.mySeat.isDefined()){
+			at.~tmpMySeat = at.mySeat.index;
+			if (at.mySeat.myTable.isDefined()){
+				at.~myTable = at.mySeat.myTable.tableID;
+			} else {at.~myTable = "N/A";}
+		} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
+	}
+	return attendees;
+}
+
+operation Attendee IsOnSameTableAs(target: Attendee): Boolean {
+	return self.mySeat.myTable.seats.attendeeSeat.includes(target);
+}
+
+operation Attendee GetFailedWishes(): Map {
+	var atSeats = self.mySeat.myTable.seats.attendeeSeat;
+	var failedWishes = self.anttendeeWishes
+						.select(aW | (aW.wish.literal == "Dislike" and atSeats.includes(aW.targetAttendee))
+									 or
+									 (aW.wish.literal == "Like" and not atSeats.includes(aW.targetAttendee)))
+						.aggregate(aW | aW.targetAttendee, aW.wish);
+	return failedWishes;
+	
+}
+
+operation AttendeeWish GetAttendeeFromListBarSelf(): Sequence {
+	var possibleAttendees = Attendee.all.reject(a | a == self.sourceAttendee);
+	var att = System.user.choose("Choose attendees", possibleAttendees);
+	var toReturn = null;
+	if (att.isDefined()){toReturn = att;}
+	else {System.user.inform("You have chosen no attendee");}
+	return toReturn;
+}
