@@ -14,14 +14,22 @@ operation OrderedSet makeNACompatiable(): OrderedSet {
 	for (at in attendees){
 		if (not at.lastName.isDefined()){at.lastName = "N/A";}
 		if (not at.firstName.isDefined()){at.firstName = "N/A";}
+		if (not at.affiliation.isDefined()){at.affiliation = "N/A";}
 		if (at.mySeat.isDefined()){
 			at.~tmpMySeat = at.mySeat.index;
 			if (at.mySeat.myTable.isDefined()){
 				at.~myTable = at.mySeat.myTable.tableID;
-			} else {at.~myTable = "N/A";}
+			} else {at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
 		} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
 	}
 	return attendees;
+}
+
+operation Attendee isSittingNextToCommonLanguage(): Boolean {
+	var neighbours = self.mySeat.GetNeighbours();
+	if (neighbours.size() > 0){
+		return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));}
+	else {return false;}
 }
 
 operation Attendee IsOnSameTableAs(target: Attendee): Boolean {
@@ -46,4 +54,29 @@ operation AttendeeWish GetAttendeeFromListBarSelf(): Sequence {
 	if (att.isDefined()){toReturn = att;}
 	else {System.user.inform("You have chosen no attendee");}
 	return toReturn;
+}
+
+
+operation SeatingPlan getAllFailures(): Map {
+	var failed: Map;
+	failed.put('failedWishes', self.attendees.aggregate(a | a, a.GetFailedWishes())); // att, (targetAtt, wish)
+	failed.put('failedLanguages', self.attendees.collect(a | a, a.isSittingNextToCommonLanguage())); // att, boolean
+	return failed.println();
+}
+
+operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
+	var spokenLanguages = self.attendees.spokenLanguages.flatten().name;
+	var numPeopleSpeakingLang = spokenLanguages.asSet().aggregate(sL | sL, spokenLanguages.count(sL));
+	if (numPeopleSpeakingLang.containsValue(1)) return true;
+	
+	
+}
+
+
+operation SeatingPlan createSeatingArangement(): SeatingPlan {
+	
+}
+
+operation Attendee assignSeat(seat: Seat){
+	
 }

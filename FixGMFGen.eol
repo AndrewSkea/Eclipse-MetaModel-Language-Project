@@ -1,3 +1,0 @@
-/*for (aW in AttendeeWish.all){
-	aW.targetAttendeeName = aW.firstName + " " + aW.lastName;
-}*/

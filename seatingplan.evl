@@ -45,15 +45,15 @@ context SeatingPlan {
 	
 	
 	constraint AllergyUnique {
-		check: self.allergies.foodAllergyName.size() == self.allergies.foodAllergyName.asSet().size()
+		check: self.allergies.name.size() == self.allergies.name.asSet().size()
 		message: "Should not have duplicate names for food allergies"
 		fix {
 			title: "Delete the duplicates"
 			do {
-				var allergyNamesSet = self.allergies.foodAllergyName.asSet();
-				var allergies = allergyNamesSet.collect(al | new FoodAllergy(foodAllergyName=al));
+				var allergyNamesSet = self.allergies.name.asSet();
+				var allergies = allergyNamesSet.collect(al | new FoodAllergy(name=al));
 				for (att in Attendee.all){
-					att.foodAllergies = allergies.select(al|att.foodAllergies.foodAllergyName.includes(al.foodAllergyName));
+					att.foodAllergies = allergies.select(al|att.foodAllergies.name.includes(al.name));
 				}
 				self.allergies = allergies;
 			}
@@ -62,15 +62,15 @@ context SeatingPlan {
 	
 	
 	constraint LanguageUnique {
-		check: self.languages.languageName.size() == self.languages.languageName.asSet().size()
+		check: self.languages.name.size() == self.languages.name.asSet().size()
 		message: "Should not have duplicate names for languages"
 		fix {
 			title: "Delete the duplicates"
 			do {
-				var languageNamesSet = self.languages.languageName.asSet();
-				var languages = languageNamesSet.collect(lang | new Language(languageName=lang));
+				var namesSet = self.languages.name.asSet();
+				var languages = namesSet.collect(lang | new Language(name=lang));
 				for (att in Attendee.all){
-					att.spokenLanguages = languages.select(la|att.spokenLanguages.languageName.includes(la.languageName));
+					att.spokenLanguages = languages.select(la|att.spokenLanguages.name.includes(la.name));
 				}
 				self.languages = languages;
 			}
@@ -161,12 +161,7 @@ context Attendee {
   
   constraint AttendeeSatWithLanguage {
 		guard: self.satisfies('SeatIsDefined')
-		check {
-			var neighbours = self.mySeat.GetNeighbours();
-			if (neighbours.size() > 0){
-				return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));}
-			else {return false;}
-		}
+		check: self.isSittingNextToCommonLanguage()
 		message: self.firstName + " " + self.lastName + " on Table " + self.mySeat.myTable.tableID + " isn't sitting next to someone that can speak their language"
 		fix {
 			title: "Find available seat with neighbours speaking the same language."
@@ -367,26 +362,26 @@ context AttendeeWish {
 context Language {
 
 	constraint IsDefined {
-		check: self.languageName.isDefined()
+		check: self.name.isDefined()
 		message: "Language isn't defined"
 		fix {
 			title: "Set language name"
 			do {
 				var name = System.user.prompt("Input language name");
-				if (name.isDefined()) self.languageName = name;
+				if (name.isDefined()) self.name = name;
 			}
 		}	
 	}
 	
 	critique NameStartsWithCapital  {
   		guard : self.satisfies('IsDefined')
-  		check : self.languageName.firstToUpperCase() = self.languageName
-  		message : 'Language Name "' + self.languageName +
+  		check : self.name.firstToUpperCase() = self.name
+  		message : 'Language Name "' + self.name +
           '" should start with an upper-case letter'
   		fix {
-          title : 'Rename to ' + self.languageName.firstToUpperCase()
+          title : 'Rename to ' + self.name.firstToUpperCase()
           do {
-              self.languageName := self.languageName.firstToUpperCase();
+              self.name := self.name.firstToUpperCase();
           }
       }
   }
@@ -396,26 +391,26 @@ context Language {
 
 context FoodAllergy {
 	constraint IsDefined {
-		check: self.foodAllergyName.isDefined()
+		check: self.name.isDefined()
 		message: "Food Allergy isn't defined"
 		fix {
 			title: "Set allergy name"
 			do {
 				var name = System.user.prompt("Input allergy name");
-				if (name.isDefined()) self.foodAllergyName = name;
+				if (name.isDefined()) self.name = name;
 			}
 		}
 	}
 	
 	critique NameStartsWithCapital  {
   		guard : self.satisfies('IsDefined')
-  		check : self.foodAllergyName.firstToUpperCase() = self.foodAllergyName
-  		message : 'Allergy Name "' + self.foodAllergyName +
+  		check : self.name.firstToUpperCase() = self.name
+  		message : 'Allergy Name "' + self.name +
           '" should start with an upper-case letter'
   		fix {
-          title : 'Rename to ' + self.foodAllergyName.firstToUpperCase()
+          title : 'Rename to ' + self.name.firstToUpperCase()
           do {
-              self.foodAllergyName := self.foodAllergyName.firstToUpperCase();
+              self.name := self.name.firstToUpperCase();
           }
       }
   }

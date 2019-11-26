@@ -1,0 +1,68 @@
+import "tools.eol";
+
+rule SeatingPlan2SeatingPlan
+	transform s: In!SeatingPlan
+	to t : Out!SeatingPlan {
+	s.getAllFailures();
+	// Check if there are failures, if not add everything like usual.
+	// If there are, check preliminaryImpossibility 
+	s.preliminaryCheckIsImpossible();
+	t.seatingPlanName = s.seatingPlanName;
+	t.tables = s.tables.equivalent();
+	t.languages = s.languages.equivalent();
+	t.allergies = s.allergies.equivalent();
+	t.attendees = s.attendees.equivalent();	
+}
+
+rule FoodAllergy2FoodAllergy
+	transform s: In!FoodAllergy
+	to t : Out!FoodAllergy {
+	t.name = s.name;
+}
+
+rule Language2Language
+	transform s: In!Language
+	to t : Out!Language {
+	t.name = s.name;
+}
+
+rule Table2Table
+	transform s: In!Table
+	to t : Out!Table {
+	t.tableID = s.tableID;
+	t.capacity = s.capacity;
+	t.seats = s.seats.equivalent();
+}
+
+rule Seat2Seat
+	transform s: In!Seat
+	to t : Out!Seat {
+	t.index = s.index;
+	t.myTable = s.myTable.equivalent();
+	t.attendeeSeat = s.attendeeSeat.equivalent();
+}
+	
+rule Attendee2Attendee
+	transform s : In!Attendee
+	to t : Out!Attendee {
+	
+	t.attendeeID = s.attendeeID;
+	t.lastName = s.lastName;
+	t.firstName = s.firstName;
+	t.affiliation = s.affiliation;
+	t.title = s.title;
+	
+	t.spokenLanguages = s.spokenLanguages.equivalent();
+	t.foodAllergies = s.foodAllergies.equivalent();
+	
+}
+
+rule AttendeeWish2AttendeeWish
+	transform s: In!AttendeeWish
+	to t : Out!AttendeeWish {
+	t.wish = s.wish;
+	t.sourceAttendee = s.sourceAttendee.equivalent();
+	t.targetAttendee = s.targetAttendee.equivalent();
+}
+
+

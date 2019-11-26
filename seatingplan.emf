@@ -1,78 +1,71 @@
-@namespace(uri="seatingplan", prefix="")
 @gmf
+@namespace(uri="seatingplan", prefix="")
 package seatingplan;
 
-
 @gmf.diagram
-class SeatingPlan{
-	attr String seatingPlanName;
-	val Table[*] tables;
-	val Language[*] languages;
-	val FoodAllergy[*] allergies;
-	val Attendee[*] attendees;
+class SeatingPlan {
+  attr String seatingPlanName;
+  val Table[*] tables;
+  val Language[*] languages;
+  val FoodAllergy[*] allergies;
+  val Attendee[*] attendees;
 }
 
+@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", color="253,248,225", border.width="3", label.icon="false")
+class Table {
+  attr int tableID;
+  attr int capacity;
 
-@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", 
-	color="64,217,255", border.width="3", label.icon="false")
-class Table{
-	attr int tableID;
-	attr int capacity;
-	
-	@gmf.affixed
-	val Seat[+]#myTable seats;
+  @gmf.affixed
+  val Seat[+]#myTable seats;
 }
 
-
-@gmf.node(label="index", label.pattern="Seat {0}", color="255,247,184", resizable="false",
-		figure="ellipse", size="100,75", border.width="2", label.icon="false")
+@gmf.node(label="index", label.pattern="Seat {0}", color="236,164,0", resizable="false", figure="ellipse", size="100,75", border.width="2", label.icon="false")
 class Seat {
-	attr int index;
-	ref Table#seats myTable;
-	
-	@gmf.link(width="2", source.decoration="filledsquare", style="solid")
-	ref Attendee#mySeat attendeeSeat;
+  attr int index;
+  ref Table#seats myTable;
+
+  @gmf.link(width="2", source.decoration="filledsquare", style="solid")
+  ref Attendee#mySeat attendeeSeat;
 }
 
-@gmf.node(figure="svg", label.icon="false", size="120,120", border.style="solid", border.width="1",
-		svg.uri="platform:/plugin/assessment/images/Person.svg", label.placement="external", resizable="false",
-		 label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
+@gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/assessment/images/Person.svg", label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
 class Attendee {
-	attr int attendeeID;
-	attr String firstName;
-	attr String lastName;
-	attr String affiliation;
-	ref Seat#attendeeSeat mySeat;
-	
-	ref Language[+] spokenLanguages;
-	ref FoodAllergy[*] foodAllergies;
-	
-	@gmf.affixed
-	val AttendeeWish[*]#sourceAttendee anttendeeWishes;
+  attr String lastName;
+  attr int attendeeID;
+  attr String title;
+  attr String firstName;
+  attr String affiliation;
+  ref Seat#attendeeSeat mySeat;
+  ref Language[+] spokenLanguages;
+  ref FoodAllergy[*] foodAllergies;
+
+  @gmf.affixed
+  val AttendeeWish[*]#sourceAttendee anttendeeWishes;
 }
 
-
-@gmf.node(label="wish", label.pattern="{0}", color="255,211,184", border.width="2", resizable="false")
+@gmf.node(label="wish", label.pattern="{0}", color="174,232,210", border.width="2", resizable="false")
 class AttendeeWish {
-	ref Attendee#anttendeeWishes sourceAttendee;
-	ref Attendee targetAttendee;
-	attr Feeling wish;
+  ref Attendee#anttendeeWishes sourceAttendee;
+  ref Attendee targetAttendee;
+  attr Feeling wish;
 }
 
-
-@gmf.node(label="languageName", label.pattern="Language - {0}", color="238,184,255", border.width="2", resizable="false")
-class Language {
-	attr String languageName;
+@gmf.node(label="name", border.width="2", resizable="false")
+abstract class BaseNamedClass {
+	attr String name;
 }
 
-
-@gmf.node(label="foodAllergyName", label.pattern="Food Allergy - {0}", color="184,217,255", border.width="2", resizable="false")
-class FoodAllergy {
-	attr String foodAllergyName;
+@gmf.node(label.pattern="Language - {0}", color="238,184,255")
+class Language extends BaseNamedClass {
 }
 
+@gmf.node(label.pattern="Food Allergy - {0}", color="184,217,255")
+class FoodAllergy extends BaseNamedClass {
+}
 
 enum Feeling {
-	Like;
-	Dislike;
+  Like = 0;
+  Dislike = 1;
 }
+

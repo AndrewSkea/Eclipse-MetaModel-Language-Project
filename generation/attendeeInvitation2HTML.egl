@@ -1,9 +1,4 @@
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-
+[%=TemplateFactory.load("header.egl").process()%]
 
 <div class="container">
 	<h5 class="display-4">Dear [%=attendee.firstName%] [%=attendee.lastName%]</h5>
@@ -17,6 +12,7 @@
 			    <tr>
 			      <th scope="col">Last Name</th>
 			      <th scope="col">First Name</th>
+			      <th scope="col">Affiliation</th>
 			      <th scope="col">Table #</th>
 			      <th scope="col">Seat #</th>
 			    </tr>
@@ -26,6 +22,7 @@
 					<tr [% if (at.attendeeID == attendee.attendeeID){%]class="table-info" style="font-style: italic;"[%}%] >
 						<td>[%=at.lastName%]</td>
 						<td>[%=at.firstName%]</td>
+						<td>[%=at.affiliation%]</td>
 						<td>[%=at.~myTable%] </td>
 						<td>[%=at.~tmpMySeat%]</td>
 					</tr>
@@ -37,50 +34,16 @@
         	<h3 class="display-5">Unfortunately, we haven't been able to grant all your wishes due to the constraints of the seating arangment</h3>
         	[% if (failedLikes.size() > 0){%]
         		<h3 class="display-5">The following people are attendees that you would like to sit with but are on another table:</h3>
-        		<table class="table">
-					<thead class="thead-dark">
-					    <tr>
-					      <th scope="col">Last Name</th>
-					      <th scope="col">First Name</th>
-					      <th scope="col">Table #</th>
-					      <th scope="col">Seat #</th>
-					    </tr>
-				  	</thead>
-			        <tbody>
-						[%for (at in failedLikes){%]
-							<tr>
-								<td>[%=at.lastName%]</td>
-								<td>[%=at.firstName%]</td>
-								<td>[%=at.~myTable%] </td>
-								<td>[%=at.~tmpMySeat%]</td>
-							</tr>
-						[%}%]
-					</tbody>
-        		</table>
+        		[%var failedLikesTable : Template = TemplateFactory.load("attendeeTableSortedLN.egl"); %]
+				[%failedLikesTable.populate("attendees", failedLikes);%]
+				[%=failedLikesTable.process()%] 
         	[%}%]
         	
         	[% if (failedDislikes.size() > 0){%]
         		<h3 class="display-5">The following people are attendees that you are sat with but have expressed a willingness not to:</h3>
-        		<table class="table">
-					<thead class="thead-dark">
-					    <tr>
-					      <th scope="col">Last Name</th>
-					      <th scope="col">First Name</th>
-					      <th scope="col">Table #</th>
-					      <th scope="col">Seat #</th>
-					    </tr>
-				  	</thead>
-			        <tbody>
-						[%for (at in failedDislikes){%]
-							<tr>
-								<td>[%=at.lastName%]</td>
-								<td>[%=at.firstName%]</td>
-								<td>[%=at.~myTable%] </td>
-								<td>[%=at.~tmpMySeat%]</td>
-							</tr>
-						[%}%]
-					</tbody>
-        		</table>
+        		[%var failedDislikesTable : Template = TemplateFactory.load("attendeeTableSortedLN.egl"); %]
+				[%failedDislikesTable.populate("attendees", failedDislikes);%]
+				[%=failedDislikesTable.process()%] 
         	[%}%]
         	
         [%}%]

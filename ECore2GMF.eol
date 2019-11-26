@@ -8,7 +8,7 @@ findLabel("FoodAllergyLabelFigure").changeFont(true, true, 10);
 // Centre labels
 findFigure('TableFigure').centreLabel(true, true);
 findFigure('SeatFigure').centreLabel(true, true);
-//findFigure('AttendeeFigure').centreLabel(false, false);
+findFigure('AttendeeFigure').centreLabel(false, true);
 findFigure('LanguageFigure').centreLabel(true, true);
 findFigure('FoodAllergyFigure').centreLabel(true, true);
 

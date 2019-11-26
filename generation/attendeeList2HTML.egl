@@ -1,0 +1,11 @@
+[%=TemplateFactory.load("header.egl").process()%]
+
+<div class="container">
+	<h3 class="display-4">Seating arrangement for <b>[%=seatingPlan.seatingPlanName%]</b></h3>
+	
+	<div class="row">
+		[%var attendeeTable : Template = TemplateFactory.load("attendeeTableSortedLN.egl"); %]
+		[%attendeeTable.populate("attendees", attendees);%]
+		[%=attendeeTable.process()%] 
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<table id="myTable" class="table table-hover">
+	<thead class="thead-dark">
+	    <tr>
+	      <th scope="col">Last Name</th>
+	      <th scope="col">First Name</th>
+	      <th scope="col">Table #</th>
+	      <th scope="col">Seat #</th>
+	    </tr>
+  </thead>
+  <tbody>
+	[%for (at in attendees.sortBy(d|d.lastName)){%]
+		<tr>
+			<td>[%=at.lastName%]</td>
+			<td>[%=at.firstName%]</td>
+			<td>[%=at.~myTable%] </td>
+			<td>[%=at.~tmpMySeat%]</td>
+		</tr>
+	[%}%]
+	</tbody>
+</table>
