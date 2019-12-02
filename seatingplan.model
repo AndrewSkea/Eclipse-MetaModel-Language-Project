@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_edIJMBEtEeqWoJeGMAjeKA">
+  <tables xmi:id="_w1g1wBEtEeqWoJeGMAjeKA" capacity="10">
+    <seats xmi:id="_x-11UBEtEeqWoJeGMAjeKA" attendeeSeat="_qJjUEBEtEeqWoJeGMAjeKA"/>
+    <seats xmi:id="_zFmpEBEtEeqWoJeGMAjeKA" attendeeSeat="_z_uH8BEtEeqWoJeGMAjeKA"/>
+  </tables>
+  <languages xmi:id="_vhxV8BEtEeqWoJeGMAjeKA" name="English"/>
+  <languages xmi:id="_6PNwEBEtEeqWoJeGMAjeKA" name="French"/>
+  <allergies xmi:id="_uMMqIBEtEeqWoJeGMAjeKA" name="Nuts"/>
+  <attendees xmi:id="_qJjUEBEtEeqWoJeGMAjeKA" lastName="Skea" title="Mr" firstName="Andrew" affiliation="None" mySeat="_x-11UBEtEeqWoJeGMAjeKA" spokenLanguages="_6PNwEBEtEeqWoJeGMAjeKA _vhxV8BEtEeqWoJeGMAjeKA">
+    <anttendeeWishes xmi:id="__oL_4BEtEeqWoJeGMAjeKA" targetAttendee="_z_uH8BEtEeqWoJeGMAjeKA"/>
+  </attendees>
+  <attendees xmi:id="_z_uH8BEtEeqWoJeGMAjeKA" lastName="Wickins" title="Ms" firstName="Lauren" affiliation="Nothing" mySeat="_zFmpEBEtEeqWoJeGMAjeKA" spokenLanguages="_vhxV8BEtEeqWoJeGMAjeKA" foodAllergies="_uMMqIBEtEeqWoJeGMAjeKA">
+    <anttendeeWishes xmi:id="_-kOogBEtEeqWoJeGMAjeKA" targetAttendee="_qJjUEBEtEeqWoJeGMAjeKA"/>
+  </attendees>
+</SeatingPlan>

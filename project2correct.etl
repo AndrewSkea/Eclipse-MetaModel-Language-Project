@@ -3,10 +3,12 @@ import "tools.eol";
 rule SeatingPlan2SeatingPlan
 	transform s: In!SeatingPlan
 	to t : Out!SeatingPlan {
-	s.getAllFailures();
-	// Check if there are failures, if not add everything like usual.
-	// If there are, check preliminaryImpossibility 
-	s.preliminaryCheckIsImpossible();
+	
+	"Get all failures".println();
+	s.getAllFailures().println();
+	"Check is impossible".println();
+	s.preliminaryCheckIsImpossible().println();
+	
 	t.seatingPlanName = s.seatingPlanName;
 	t.tables = s.tables.equivalent();
 	t.languages = s.languages.equivalent();

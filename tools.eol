@@ -1,4 +1,5 @@
 operation Seat GetNeighbours(): Sequence {
+	var maths = Native("java.lang.Math");
 	var tableSeats = self.myTable.seats;
 	var returned: Sequence;
 	if (tableSeats.size() > 1){
@@ -58,23 +59,63 @@ operation AttendeeWish GetAttendeeFromListBarSelf(): Sequence {
 
 
 operation SeatingPlan getAllFailures(): Map {
-	var failed: Map;
-	failed.put('failedWishes', self.attendees.aggregate(a | a, a.GetFailedWishes())); // att, (targetAtt, wish)
-	failed.put('failedLanguages', self.attendees.collect(a | a, a.isSittingNextToCommonLanguage())); // att, boolean
-	return failed.println();
+	var failed = new Map;
+	var failedWishes = new Map;
+	var failedLanguages = new Map;
+	
+	for (at in self.attendees){
+		var fails = at.GetFailedWishes();
+		if (fails.size() > 0){failedWishes.put(at, fails);}
+		if (at.isSittingNextToCommonLanguage()){failedLanguages.put(at, false);}
+	}
+	if (failedWishes.size()>0) failed.put('failedWishes', failedWishes); // att, (targetAtt, wish)
+	if (failedLanguages.size()>0) failed.put('failedLanguages', failedLanguages); // att, boolean
+	return failed;
 }
 
 operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
-	var spokenLanguages = self.attendees.spokenLanguages.flatten().name;
-	var numPeopleSpeakingLang = spokenLanguages.asSet().aggregate(sL | sL, spokenLanguages.count(sL));
-	if (numPeopleSpeakingLang.containsValue(1)) return true;
+
+	for (at in self.attendees){
 	
-	
+		// Check if any attendee can't speak to someone else
+		var otherLang = self.attendees.excluding(at).spokenLanguages.flatten().name;
+		if (not at.spokenLanguages.flatten().name.exists(l | otherLang.includes(l))){
+			var msg = at.firstName + " " + at.lastName + " speaks language(s) that no one else understands.";
+			System.user.inform(msg);
+			return true;
+		}
+		
+		// Check if any attendee likes someone who doesn't like them back
+		for (_wish in at.anttendeeWishes){
+			if (_wish.wish.literal == "Like" 
+				and _wish.targetAttendee.anttendeeWishes.exists(w | w.targetAttendee == at and w.wish.literal == "Dislike")){
+					var msg = at.firstName + " " + at.lastName + " has conflicting wishes with " + _wish.targetAttendee.firstName + " " + _wish.targetAttendee.lastName;
+					System.user.inform(msg);
+					return true;
+				}
+		}
+	}
+	return false;
+}
+
+operation SeatingPlan orgainseSeatingArangement(): SeatingPlan {
+	var index = 0;
+	while (index < 20) {
+		index += 1;
+		if (self.getAllFailures().size == 0){"COMPLETED!".println(); break;}
+		self.createSeatingArangement();
+	}
 }
 
 
 operation SeatingPlan createSeatingArangement(): SeatingPlan {
-	
+
+	for (at in self.attendees){
+		at.assignSeat();
+		if (at.GetFailedWishes().size() > 0){
+			  
+		}
+	}
 }
 
 operation Attendee assignSeat(seat: Seat){

@@ -22,7 +22,8 @@ class Table {
 
 @gmf.node(label="index", label.pattern="Seat {0}", color="236,164,0", resizable="false", figure="ellipse", size="100,75", border.width="2", label.icon="false")
 class Seat {
-  attr int index;
+  derived transient !volatile attr int index;
+  // attr int index;
   ref Table#seats myTable;
 
   @gmf.link(width="2", source.decoration="filledsquare", style="solid")
