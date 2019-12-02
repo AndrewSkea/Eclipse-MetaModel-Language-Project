@@ -18,7 +18,7 @@ abstract class BaseIndexedClass {
 @gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", color="253,248,225", border.width="3", label.icon="false")
 class Table extends BaseIndexedClass{
   attr int capacity;
-
+  
   @gmf.affixed
   val Seat[+]#myTable seats;
 }
