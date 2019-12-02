@@ -11,9 +11,12 @@ class SeatingPlan {
   val Attendee[*] attendees;
 }
 
+abstract class BaseIndexedClass {
+	attr int incrID;
+}
+
 @gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", color="253,248,225", border.width="3", label.icon="false")
-class Table {
-  attr int tableID;
+class Table extends BaseIndexedClass{
   attr int capacity;
 
   @gmf.affixed
@@ -21,8 +24,7 @@ class Table {
 }
 
 @gmf.node(label="index", label.pattern="Seat {0}", color="236,164,0", resizable="false", figure="ellipse", size="100,75", border.width="2", label.icon="false")
-class Seat {
-  attr int index;
+class Seat extends BaseIndexedClass {
   ref Table#seats myTable;
 
   @gmf.link(width="2", source.decoration="filledsquare", style="solid")
@@ -30,11 +32,10 @@ class Seat {
 }
 
 @gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/assessment/images/Person.svg", label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
-class Attendee {
+class Attendee extends BaseIndexedClass {
   attr String lastName;
-  attr int attendeeID;
-  attr String title;
   attr String firstName;
+  attr String title;
   attr String affiliation;
   ref Seat#attendeeSeat mySeat;
   ref Language[+] spokenLanguages;
