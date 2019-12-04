@@ -2,7 +2,7 @@
 
 <div class="container">
 	<h5 class="display-4">Dear [%=attendee.firstName%] [%=attendee.lastName%]</h5>
-	<h4 class="display-5">You will be sat at table number [%=attendee.mySeat.myTable.tableID%] on seat number [%=attendee.mySeat.index%]</h4>
+	<h4 class="display-5">You will be sat at table number [%=attendee.mySeat.myTable.uID%] on seat number [%=attendee.mySeat.uID%]</h4>
 	<div style="margin-top:30px"></div>
 	<h3 class="display-6">At your table (arranged by seating order):</h3>
 	
@@ -18,8 +18,8 @@
 			    </tr>
 		  	</thead>
 	        <tbody>
-				[%for (at in tableAtt.sortBy(d|d.mySeat.index)){%]
-					<tr [% if (at.attendeeID == attendee.attendeeID){%]class="table-info" style="font-style: italic;"[%}%] >
+				[%for (at in tableAtt.sortBy(d|d.mySeat.uID)){%]
+					<tr [% if (at.uID == attendee.uID){%]class="table-info" style="font-style: italic;"[%}%] >
 						<td>[%=at.lastName%]</td>
 						<td>[%=at.firstName%]</td>
 						<td>[%=at.affiliation%]</td>

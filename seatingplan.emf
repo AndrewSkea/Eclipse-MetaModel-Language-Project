@@ -11,28 +11,28 @@ class SeatingPlan {
   val Attendee[*] attendees;
 }
 
-abstract class BaseIndexedClass {
-	attr int incrID;
+abstract class BaseUniqueIDClass {
+	attr int uID;
 }
 
-@gmf.node(label="tableID,capacity", label.pattern="Table {0} - Capacity: {1}", color="253,248,225", border.width="3", label.icon="false")
-class Table extends BaseIndexedClass{
+@gmf.node(label="uID,capacity", label.pattern="Table {0} - Capacity: {1}", color="253,248,225", border.width="3", label.icon="false")
+class Table extends BaseUniqueIDClass{
   attr int capacity;
   
   @gmf.affixed
   val Seat[+]#myTable seats;
 }
 
-@gmf.node(label="index", label.pattern="Seat {0}", color="236,164,0", resizable="false", figure="ellipse", size="100,75", border.width="2", label.icon="false")
-class Seat extends BaseIndexedClass {
+@gmf.node(label="uID", label.pattern="Seat {0}", color="236,164,0", resizable="false", figure="ellipse", size="100,75", border.width="2", label.icon="false")
+class Seat extends BaseUniqueIDClass {
   ref Table#seats myTable;
 
   @gmf.link(width="2", source.decoration="filledsquare", style="solid")
   ref Attendee#mySeat attendeeSeat;
 }
 
-@gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/assessment/images/Person.svg", label="attendeeID,firstName,lastName", label.pattern="{0}. {1} {2}")
-class Attendee extends BaseIndexedClass {
+@gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/assessment/images/Person.svg", label="uID,firstName,lastName", label.pattern="{0}. {1} {2}")
+class Attendee extends BaseUniqueIDClass {
   attr String lastName;
   attr String firstName;
   attr String title;

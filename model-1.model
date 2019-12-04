@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_3Em-MBZwEeqv3OqBXDXyuA" seatingPlanName="International Conference">
+  <tables xmi:id="_4yn_MBZwEeqv3OqBXDXyuA" capacity="4">
+    <seats xmi:id="_65MqIBZwEeqv3OqBXDXyuA" attendeeSeat="_502RMBZwEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_7LcQsBZwEeqv3OqBXDXyuA" uID="1" attendeeSeat="_Gk41MBZxEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_h3R9cBZzEeqv3OqBXDXyuA" uID="2"/>
+    <seats xmi:id="_infSYBZzEeqv3OqBXDXyuA" uID="3" attendeeSeat="_m2_DkBZxEeqv3OqBXDXyuA"/>
+  </tables>
+  <tables xmi:id="_dZ3W8BZzEeqv3OqBXDXyuA" uID="1" capacity="5">
+    <seats xmi:id="_gBjK4BZzEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_hOFPcBZzEeqv3OqBXDXyuA" uID="1" attendeeSeat="_6e-E4BZzEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_hfjZ8BZzEeqv3OqBXDXyuA" uID="2" attendeeSeat="_G4BzoBZxEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_jJDuYBZzEeqv3OqBXDXyuA" uID="3" attendeeSeat="_eJcEoBZxEeqv3OqBXDXyuA"/>
+    <seats xmi:id="_jhVEcBZzEeqv3OqBXDXyuA" uID="4"/>
+  </tables>
+  <languages xmi:id="_6Yd7oBZwEeqv3OqBXDXyuA" name="English"/>
+  <languages xmi:id="_FED7oBZxEeqv3OqBXDXyuA" name="French"/>
+  <languages xmi:id="_FX5doBZxEeqv3OqBXDXyuA" name="German"/>
+  <languages xmi:id="_FrcEsBZxEeqv3OqBXDXyuA" name="Chinese"/>
+  <languages xmi:id="_GEh6IBZxEeqv3OqBXDXyuA" name="Russian"/>
+  <allergies xmi:id="_5aX7sBZwEeqv3OqBXDXyuA" name="Nuts"/>
+  <allergies xmi:id="_D9CCIBZxEeqv3OqBXDXyuA" name="Wheat"/>
+  <allergies xmi:id="_EVXCkBZxEeqv3OqBXDXyuA" name="Salmon"/>
+  <allergies xmi:id="_EqV0EBZxEeqv3OqBXDXyuA" name="Shell Fish"/>
+  <attendees xmi:id="_502RMBZwEeqv3OqBXDXyuA" lastName="Peatry" firstName="John" title="Mr" affiliation="N/A" mySeat="_65MqIBZwEeqv3OqBXDXyuA" spokenLanguages="_6Yd7oBZwEeqv3OqBXDXyuA" foodAllergies="_5aX7sBZwEeqv3OqBXDXyuA">
+    <anttendeeWishes xmi:id="_x76JkBZxEeqv3OqBXDXyuA" targetAttendee="_G4BzoBZxEeqv3OqBXDXyuA"/>
+    <anttendeeWishes xmi:id="_ytRVEBZxEeqv3OqBXDXyuA" targetAttendee="_m2_DkBZxEeqv3OqBXDXyuA"/>
+  </attendees>
+  <attendees xmi:id="_Gk41MBZxEeqv3OqBXDXyuA" uID="1" lastName="Blair" firstName="Euan" title="Mr" affiliation="N/A" mySeat="_7LcQsBZwEeqv3OqBXDXyuA" spokenLanguages="_6Yd7oBZwEeqv3OqBXDXyuA _FED7oBZxEeqv3OqBXDXyuA" foodAllergies="_EVXCkBZxEeqv3OqBXDXyuA">
+    <anttendeeWishes xmi:id="_xD1SEBZxEeqv3OqBXDXyuA" targetAttendee="_eJcEoBZxEeqv3OqBXDXyuA"/>
+  </attendees>
+  <attendees xmi:id="_G4BzoBZxEeqv3OqBXDXyuA" uID="2" lastName="Chung" firstName="Yuri" title="Mr" affiliation="N/A" mySeat="_hfjZ8BZzEeqv3OqBXDXyuA" spokenLanguages="_FrcEsBZxEeqv3OqBXDXyuA _FED7oBZxEeqv3OqBXDXyuA"/>
+  <attendees xmi:id="_eJcEoBZxEeqv3OqBXDXyuA" uID="3" lastName="Goncalves" firstName="Anna" title="Ms" affiliation="N/A" mySeat="_jJDuYBZzEeqv3OqBXDXyuA" spokenLanguages="_6Yd7oBZwEeqv3OqBXDXyuA _FED7oBZxEeqv3OqBXDXyuA _GEh6IBZxEeqv3OqBXDXyuA" foodAllergies="_D9CCIBZxEeqv3OqBXDXyuA">
+    <anttendeeWishes xmi:id="_vfH-EBZxEeqv3OqBXDXyuA" targetAttendee="_m2_DkBZxEeqv3OqBXDXyuA" wish="Dislike"/>
+  </attendees>
+  <attendees xmi:id="_m2_DkBZxEeqv3OqBXDXyuA" uID="4" lastName="Hebert" firstName="Sarah" title="Ms" affiliation="N/A" mySeat="_infSYBZzEeqv3OqBXDXyuA" spokenLanguages="_FED7oBZxEeqv3OqBXDXyuA _FX5doBZxEeqv3OqBXDXyuA">
+    <anttendeeWishes xmi:id="_uDV8kBZxEeqv3OqBXDXyuA" targetAttendee="_Gk41MBZxEeqv3OqBXDXyuA" wish="Dislike"/>
+    <anttendeeWishes xmi:id="_9i79cBZ5Eeqv3OqBXDXyuA" targetAttendee="_G4BzoBZxEeqv3OqBXDXyuA"/>
+  </attendees>
+  <attendees xmi:id="_6e-E4BZzEeqv3OqBXDXyuA" uID="5" lastName="Adamson" firstName="Emily" title="Mrs" affiliation="N/A" mySeat="_hOFPcBZzEeqv3OqBXDXyuA" spokenLanguages="_GEh6IBZxEeqv3OqBXDXyuA _6Yd7oBZwEeqv3OqBXDXyuA">
+    <anttendeeWishes xmi:id="_Dp5jYBZ0Eeqv3OqBXDXyuA" targetAttendee="_Gk41MBZxEeqv3OqBXDXyuA" wish="Dislike"/>
+  </attendees>
+</SeatingPlan>

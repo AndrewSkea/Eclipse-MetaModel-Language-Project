@@ -4,12 +4,12 @@ pre {
 	var tables = Table.all;
 	var i = 0; 
   	for (el in tables) {
-  		el.tableID = i; i += 1;
+  		el.uID = i; i += 1;
   		var j = 0;
-  		for (seat in el.seats){seat.index = j; j += 1;}
+  		for (seat in el.seats){seat.uID = j; j += 1;}
   	}
   	var k = 0;
-	for (a in Attendee.all){a.attendeeID = k; k+=1;}
+	for (a in Attendee.all){a.uID = k; k+=1;}
   	var maths = Native("java.lang.Math");
 }
 
@@ -145,16 +145,7 @@ context Attendee {
   		fix {
   			title: "Choose a seat for the attendee"
   			do {
-  				var chosenTable = System.user.choose("Choose which table", Table.All);
-  				
-  				if (chosenTable.isDefined()){
-  					var availableSeats = chosenTable.seats.select(s | not s.attendeeSeat.isDefined());
-  					if (availableSeats.size() > 0){
-  						var chosenSeat = System.user.choose("Choose which seat", availableSeats);
-  						if (chosenSeat.isDefined()) self.mySeat = chosenSeat;	
-  					}
-  					else System.user.inform("There are no available seats at this table. Add a seat to assign this attendee.");
-  				} else System.user.inform("There are no available tables");
+  				self.chooseFromAvailableSeats();
   			}
   		}
   }
@@ -162,7 +153,7 @@ context Attendee {
   constraint AttendeeSatWithLanguage {
 		guard: self.satisfies('SeatIsDefined')
 		check: self.isSittingNextToCommonLanguage()
-		message: self.firstName + " " + self.lastName + " on Table " + self.mySeat.myTable.tableID + " isn't sitting next to someone that can speak their language"
+		message: self.firstName + " " + self.lastName + " on Table " + self.mySeat.myTable.uID + " isn't sitting next to someone that can speak their language"
 		fix {
 			title: "Find available seat with neighbours speaking the same language."
 			do {
@@ -230,11 +221,11 @@ context Table {
 	
 		guard : self.satisfies('HasCapacity')
 		check: self.seats.size() >= 1
-		message: "Table " + self.tableID + " has not got any seats"
+		message: "Table " + self.uID + " has not got any seats"
 		
 		fix {
 		
-			title: "Either add a seat or remove table " + self.tableID + " from the seating plan"
+			title: "Either add a seat or remove table " + self.uID + " from the seating plan"
 
 			do {
 				var options = Sequence{"Remove table", "Add seat"};				
@@ -248,7 +239,7 @@ context Table {
 					if (Attendee.all.size() > 0){
 						var chosenAttendee = System.user.choose("Choose attendee", Attendee.all);
 						if (chosenAttendee.isDefined()) {
-							self.seats.add(new Seat(index=1, attendeeSeat=chosenAttendee));
+							self.seats.add(new Seat(uID=1, attendeeSeat=chosenAttendee));
 						} else {
 							System.user.inform("You must choose an attendee");}
 					} else {
@@ -263,7 +254,7 @@ context Table {
 	constraint LessThanCapacity {
 		guard : self.satisfies('HasCapacity')
 		check: self.seats.size() <= self.capacity
-		message: "Table " + self.tableID + " has got more seats than capacity"
+		message: "Table " + self.uID + " has got more seats than capacity"
 		fix {
 			title: "Delete seats"
 			do {
@@ -278,8 +269,8 @@ context Table {
 context AttendeeWish {
 
 	constraint HasReferencedAttendee {
-		check: self.targetAttendee.isDefined() and self.sourceAttendee.satisfies('SeatIsDefined')
-		message: "There must be a referenced attendee"
+		check: self.targetAttendee.isDefined()
+		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName + " has a wish that doesn't contain a referenced attendee"
 		fix {
 			title: "Choose the attendee"
 			do {
@@ -288,8 +279,20 @@ context AttendeeWish {
 		}
 	}
 	
-	constraint HasWish {
+	constraint AttendeeIsNotSelf {
 		guard: self.satisfies('HasReferencedAttendee')
+		check: self.targetAttendee <> self.sourceAttendee
+		message: "Cannot assign a feeling to the same person"
+		fix {
+			title: "Choose another attendee"
+			do {
+				self.targetAttendee = self.GetAttendeeFromListBarSelf();
+			}
+		}
+	}
+	
+	constraint HasWish {
+		guard: self.satisfies('AttendeeIsNotSelf') and self.sourceAttendee.satisfies("SeatIsDefined") and self.targetAttendee.satisfies("SeatIsDefined")
 		check: self.wish.isDefined()
 		message: "There must be a wish defined"
 		fix {
@@ -301,20 +304,8 @@ context AttendeeWish {
 		}
 	}
 	
-	constraint AttendeeIsNotSelf {
-		guard: self.satisfies('HasWish')
-		check: self.targetAttendee <> self.sourceAttendee
-		message: "Cannot assign a feeling to the same person"
-		fix {
-			title: "Choose another attendee"
-			do {
-				self.targetAttendee = self.GetAttendeeFromListBarSelf();
-			}
-		}
-	}
-	
 	critique AttendeeSatWithDislike {
-		guard: self.satisfies('AttendeeIsNotSelf')
+		guard: self.satisfies('HasWish')
 		check: not(self.sourceAttendee.IsOnSameTableAs(self.targetAttendee) and self.wish.literal == "Dislike")
 		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
 				+ " is sitting on a table with " + self.targetAttendee.firstName + " " 
@@ -338,7 +329,7 @@ context AttendeeWish {
 	}
 	
 	critique AttendeeNotSatWithLike {
-		guard: self.satisfies('AttendeeIsNotSelf')
+		guard: self.satisfies('HasWish')
 		check: not(not self.sourceAttendee.IsOnSameTableAs(self.targetAttendee) and self.wish.literal == "Like")
 		message: self.sourceAttendee.firstName + " " + self.sourceAttendee.lastName 
 				+ " isn't sitting on a table with " + self.targetAttendee.firstName + " " 

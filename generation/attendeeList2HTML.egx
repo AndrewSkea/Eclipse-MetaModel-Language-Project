@@ -26,7 +26,7 @@ rule AttendeeInvitations2HTML
 					'failedDislikes' = failedWishes.keySet().select(k | failedWishes.get(k).literal=="Dislike")
 					};
 	}
-	target : outDirLib + "invitations/" + attendee.lastName + "_" + attendee.firstName + "_" + attendee.attendeeID + extension
+	target : outDirLib + "invitations/" + attendee.lastName + "_" + attendee.firstName + "_" + attendee.uID + extension
 }
 
 

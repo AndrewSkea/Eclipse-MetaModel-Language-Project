@@ -13,7 +13,9 @@ rule SeatingPlan2SeatingPlan
 	t.tables = s.tables.equivalent();
 	t.languages = s.languages.equivalent();
 	t.allergies = s.allergies.equivalent();
-	t.attendees = s.attendees.equivalent();	
+	t.attendees = s.attendees.equivalent();
+	
+	
 }
 
 rule FoodAllergy2FoodAllergy
@@ -31,7 +33,7 @@ rule Language2Language
 rule Table2Table
 	transform s: In!Table
 	to t : Out!Table {
-	t.tableID = s.tableID;
+	t.uID = s.uID;
 	t.capacity = s.capacity;
 	t.seats = s.seats.equivalent();
 }
@@ -39,7 +41,7 @@ rule Table2Table
 rule Seat2Seat
 	transform s: In!Seat
 	to t : Out!Seat {
-	t.index = s.index;
+	t.uID = s.uID;
 	t.myTable = s.myTable.equivalent();
 	t.attendeeSeat = s.attendeeSeat.equivalent();
 }
@@ -48,7 +50,7 @@ rule Attendee2Attendee
 	transform s : In!Attendee
 	to t : Out!Attendee {
 	
-	t.attendeeID = s.attendeeID;
+	t.uID = s.uID;
 	t.lastName = s.lastName;
 	t.firstName = s.firstName;
 	t.affiliation = s.affiliation;

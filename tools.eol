@@ -4,11 +4,23 @@ operation Seat GetNeighbours(): Sequence {
 	var returned: Sequence;
 	if (tableSeats.size() > 1){
 	 returned = tableSeats.select(s | s.attendeeSeat.isDefined() 
-						and (s.index == maths.floorMod(self.index+1,tableSeats.size())
-							 or s.index == maths.floorMod(self.index-1,tableSeats.size()))).attendeeSeat;}
+						and (s.uID == maths.floorMod(self.uID+1,tableSeats.size())
+							 or s.uID == maths.floorMod(self.uID-1,tableSeats.size()))).attendeeSeat;}
 	return returned;
 }
 
+operation Attendee chooseFromAvailableSeats() {
+	var chosenTable = System.user.choose("Choose which table", Table.All);
+  				
+  	if (chosenTable.isDefined()){
+  		var availableSeats = chosenTable.seats.select(s | not s.attendeeSeat.isDefined());
+  		if (availableSeats.size() > 0){
+  			var chosenSeat = System.user.choose("Choose which seat", availableSeats);
+  			if (chosenSeat.isDefined()) self.mySeat = chosenSeat;	
+  		}
+  		else System.user.inform("There are no available seats at this table. Add a seat to assign this attendee.");
+  	} else System.user.inform("There are no available tables");
+}
 
 operation OrderedSet makeNACompatiable(): OrderedSet {
 	var attendees = self.clone();
@@ -17,9 +29,9 @@ operation OrderedSet makeNACompatiable(): OrderedSet {
 		if (not at.firstName.isDefined()){at.firstName = "N/A";}
 		if (not at.affiliation.isDefined()){at.affiliation = "N/A";}
 		if (at.mySeat.isDefined()){
-			at.~tmpMySeat = at.mySeat.index;
+			at.~tmpMySeat = at.mySeat.uID;
 			if (at.mySeat.myTable.isDefined()){
-				at.~myTable = at.mySeat.myTable.tableID;
+				at.~myTable = at.mySeat.myTable.uID;
 			} else {at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
 		} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
 	}
