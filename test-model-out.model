@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" seatingPlanName="International Conference">
+  <tables href="model-1.model#/3"/>
+  <tables href="model-1.model#/2"/>
+  <tables href="model-1.model#/1"/>
+  <languages name="English"/>
+  <languages name="French"/>
+  <languages name="German"/>
+  <languages name="Chinese"/>
+  <languages name="Russian"/>
+  <allergies name="Nuts"/>
+  <allergies name="Wheat"/>
+  <allergies name="Salmon"/>
+  <allergies name="Shell Fish"/>
+  <attendees lastName="Peatry" firstName="John" title="Mr" affiliation="N/A" spokenLanguages="//@languages.0" foodAllergies="//@allergies.0">
+    <mySeat href="model-1.model#/1/@seats.3"/>
+    <anttendeeWishes targetAttendee="//@attendees.2"/>
+    <anttendeeWishes targetAttendee="//@attendees.4"/>
+  </attendees>
+  <attendees uID="1" lastName="Blair" firstName="Euan" title="Mr" affiliation="N/A" spokenLanguages="//@languages.0 //@languages.1" foodAllergies="//@allergies.2">
+    <mySeat href="model-1.model#/2/@seats.2"/>
+    <anttendeeWishes targetAttendee="//@attendees.3"/>
+  </attendees>
+  <attendees uID="2" lastName="Chung" firstName="Yuri" title="Mr" affiliation="N/A" spokenLanguages="//@languages.3 //@languages.1">
+    <mySeat href="model-1.model#/1/@seats.2"/>
+  </attendees>
+  <attendees uID="3" lastName="Goncalves" firstName="Anna" title="Ms" affiliation="N/A" spokenLanguages="//@languages.0 //@languages.1 //@languages.4" foodAllergies="//@allergies.1">
+    <mySeat href="model-1.model#/2/@seats.0"/>
+    <anttendeeWishes targetAttendee="//@attendees.4"/>
+  </attendees>
+  <attendees uID="4" lastName="Hebert" firstName="Sarah" title="Ms" affiliation="N/A" spokenLanguages="//@languages.1 //@languages.2">
+    <mySeat href="model-1.model#/2/@seats.1"/>
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+    <anttendeeWishes targetAttendee="//@attendees.3"/>
+  </attendees>
+  <attendees uID="5" lastName="Adamson" firstName="Emily" title="Mrs" affiliation="N/A" spokenLanguages="//@languages.4 //@languages.0">
+    <mySeat href="model-1.model#/3/@seats.0"/>
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+  </attendees>
+</SeatingPlan>

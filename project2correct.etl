@@ -1,23 +1,5 @@
 import "tools.eol";
 
-rule SeatingPlan2SeatingPlan
-	transform s: In!SeatingPlan
-	to t : Out!SeatingPlan {
-	
-	"Get all failures".println();
-	s.getAllFailures().println();
-	"Check is impossible".println();
-	s.preliminaryCheckIsImpossible().println();
-	
-	t.seatingPlanName = s.seatingPlanName;
-	t.tables = s.tables.equivalent();
-	t.languages = s.languages.equivalent();
-	t.allergies = s.allergies.equivalent();
-	t.attendees = s.attendees.equivalent();
-	
-	
-}
-
 rule FoodAllergy2FoodAllergy
 	transform s: In!FoodAllergy
 	to t : Out!FoodAllergy {
@@ -30,22 +12,6 @@ rule Language2Language
 	t.name = s.name;
 }
 
-rule Table2Table
-	transform s: In!Table
-	to t : Out!Table {
-	t.uID = s.uID;
-	t.capacity = s.capacity;
-	t.seats = s.seats.equivalent();
-}
-
-rule Seat2Seat
-	transform s: In!Seat
-	to t : Out!Seat {
-	t.uID = s.uID;
-	t.myTable = s.myTable.equivalent();
-	t.attendeeSeat = s.attendeeSeat.equivalent();
-}
-	
 rule Attendee2Attendee
 	transform s : In!Attendee
 	to t : Out!Attendee {
@@ -57,8 +23,7 @@ rule Attendee2Attendee
 	t.title = s.title;
 	
 	t.spokenLanguages = s.spokenLanguages.equivalent();
-	t.foodAllergies = s.foodAllergies.equivalent();
-	
+	t.foodAllergies = s.foodAllergies.equivalent();	
 }
 
 rule AttendeeWish2AttendeeWish
@@ -69,4 +34,17 @@ rule AttendeeWish2AttendeeWish
 	t.targetAttendee = s.targetAttendee.equivalent();
 }
 
-
+rule SeatingPlan2SeatingPlan
+	transform s: In!SeatingPlan
+	to t : Out!SeatingPlan {
+	
+	if (s.preliminaryCheckIsImpossible()){
+		System.user.inform("Arranging the seating plan without failures is impossible");
+	} else {	
+		t.seatingPlanName = s.seatingPlanName;
+		t.languages = s.languages.equivalent();
+		t.allergies = s.allergies.equivalent();
+		t.attendees = s.attendees.equivalent();
+		t.sortAttendees(); // This will create tables and assign seats and people to them.
+	}
+}

@@ -85,10 +85,13 @@ operation SeatingPlan getAllFailures(): Map {
 	return failed;
 }
 
+operation Set<Attendee> hasUniqueLanguage(): Boolean {
+	return self.spokenLanguages.asSet().exists(l | self.count(l)<=1);
+}
+
 operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
 
 	for (at in self.attendees){
-	
 		// Check if any attendee can't speak to someone else
 		var otherLang = self.attendees.excluding(at).spokenLanguages.flatten().name;
 		if (not at.spokenLanguages.flatten().name.exists(l | otherLang.includes(l))){
@@ -110,26 +113,119 @@ operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
 	return false;
 }
 
-operation SeatingPlan orgainseSeatingArangement(): SeatingPlan {
-	var index = 0;
-	while (index < 20) {
-		index += 1;
-		if (self.getAllFailures().size == 0){"COMPLETED!".println(); break;}
-		self.createSeatingArangement();
-	}
+operation Attendee getLikedPeople(): Set {
+	return self.anttendeeWishes.select(at|at.wish.literal == "Like").targetAttendee.asSet();//.excludingAll(currentList);
 }
-
-
-operation SeatingPlan createSeatingArangement(): SeatingPlan {
-
-	for (at in self.attendees){
-		at.assignSeat();
-		if (at.GetFailedWishes().size() > 0){
-			  
+/*
+operation getAllInGroup(attendeelist: Set, finalList: Set) {
+	//
+	// attendeeList is a set of one Attendee to start from; finalList is a new Set
+	// Recursive function to find everyone that a person wants to sit with
+	// And who they want to sit with and so on. Return final list of them
+	//
+	var atList = attendeelist.excludingAll(finalList);
+	finalList.addAll(atList);
+	for (at in atList){
+		var sitWith = at.getLikedPeople(finalList);
+		if (sitWith.size() == 0){
+			return at;
+		}
+		if (sitWith.size() >= 1){
+			finalList.add(getAllInGroup(sitWith.clone(), finalList.clone()));
 		}
 	}
+	return finalList;
+}
+*/
+
+operation Attendee getGroupForAttendee() {
+	var baseAr = new Set;
+	baseAr.add(self);
+	var likeAr = baseAr.clone();	
+	while (likeAr.size() > 0){
+		var nextGen = new Set;
+		for (at in likeAr){
+			var newPeop = at.getLikedPeople();
+			nextGen.addAll(newPeop);
+		}
+		likeAr = nextGen.excludingAll(baseAr).clone();
+		baseAr.addAll(likeAr.clone());
+	}
+	return baseAr;
 }
 
-operation Attendee assignSeat(seat: Seat){
+
+operation SeatingPlan sortAttendees(): SeatingPlan {
+	/*
+	Clone all the attendees into a set
+	whilst there is people still in that set, get the result from the getAllInGroup fn
+	Remove the people in the result from the original cloned attendeeList
+	Build up a set of sets of people that must sit with each other
+	*/
+	var oAttendees = self.attendees.clone().asSet().sortBy(a|a.uID);
+	var gAttendees = new Sequence();
+	var _group: Set;
 	
+	while (oAttendees.size() > 0){
+		var chosenAtt = oAttendees[0];
+		_group = chosenAtt.getGroupForAttendee().asSet();
+		gAttendees.add(_group);
+		oAttendees = oAttendees.excludingAll(_group);
+	}
+	gAttendees.collect(s|s.size().println());
+	for (set in gAttendees){
+		set.println();
+	}
+	
+	var i = 0;
+	var cap = gAttendees.collect(s|s.size()).max();
+	var tables = new Set();
+	for (set in gAttendees){
+		
+		if (not set.hasUniqueLanguage()){
+			// Check if that language is spoken on another table
+			// If not, then no one speasks it
+			// If is, go through all the people that do and find the one that is easiest to bring over
+			// If none easy, can he go to their table.
+			// Language always above preferences.
+			"In here".println();
+			if (self.attendees.spokenLanguages){}
+		} else {
+			// Sort everyone by their languages
+			// Seat them all down that way so at least one person speaks the same language as you do
+			// Create a new seat for each of them around the table
+			set = set.sortBy(a|a.spokenLanguages.sortBy(l|l.name));
+			var newTable = new Table(uID=i, capacity=cap);
+			var index = 0;
+			var seats = new Set();
+			for (at in set){
+				var seat = new Seat();
+				seat.myTable = newTable;
+				seat.attendeeSeat = at;
+				seat.uID = index;
+				index += 1;
+				seats.add(seat);
+			}
+			newTable.seats = seats;
+			tables.add(newTable);
+			i += 1;
+		}
+	}
+	self.tables = tables;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
