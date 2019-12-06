@@ -85,11 +85,12 @@ operation SeatingPlan getAllFailures(): Map {
 	return failed;
 }
 
-operation Set<Attendee> hasUniqueLanguage(): Boolean {
-	return self.spokenLanguages.asSet().exists(l | self.count(l)<=1);
+operation Set<Attendee> hasUniqueLanguage(): Set {
+	var langs = self.spokenLanguages.flatten();
+	return langs.asSet().select(l | langs.count(l) == 1);
 }
 
-operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
+operation Out!SeatingPlan preliminaryCheckIsImpossible(): Boolean {
 
 	for (at in self.attendees){
 		// Check if any attendee can't speak to someone else
@@ -113,32 +114,11 @@ operation SeatingPlan preliminaryCheckIsImpossible(): Boolean {
 	return false;
 }
 
-operation Attendee getLikedPeople(): Set {
+operation Out!Attendee getLikedPeople(): Set {
 	return self.anttendeeWishes.select(at|at.wish.literal == "Like").targetAttendee.asSet();//.excludingAll(currentList);
 }
-/*
-operation getAllInGroup(attendeelist: Set, finalList: Set) {
-	//
-	// attendeeList is a set of one Attendee to start from; finalList is a new Set
-	// Recursive function to find everyone that a person wants to sit with
-	// And who they want to sit with and so on. Return final list of them
-	//
-	var atList = attendeelist.excludingAll(finalList);
-	finalList.addAll(atList);
-	for (at in atList){
-		var sitWith = at.getLikedPeople(finalList);
-		if (sitWith.size() == 0){
-			return at;
-		}
-		if (sitWith.size() >= 1){
-			finalList.add(getAllInGroup(sitWith.clone(), finalList.clone()));
-		}
-	}
-	return finalList;
-}
-*/
 
-operation Attendee getGroupForAttendee() {
+operation Out!Attendee getGroupForAttendee() {
 	var baseAr = new Set;
 	baseAr.add(self);
 	var likeAr = baseAr.clone();	
@@ -155,61 +135,94 @@ operation Attendee getGroupForAttendee() {
 }
 
 
-operation SeatingPlan sortAttendees(): SeatingPlan {
+operation Out!SeatingPlan sortAttendees(): SeatingPlan {
 	/*
-	Clone all the attendees into a set
+	Clone all the attendees into a set then order them by uid
 	whilst there is people still in that set, get the result from the getAllInGroup fn
 	Remove the people in the result from the original cloned attendeeList
 	Build up a set of sets of people that must sit with each other
 	*/
 	var oAttendees = self.attendees.clone().asSet().sortBy(a|a.uID);
 	var gAttendees = new Sequence();
-	var _group: Set;
-	
+
+	// This sets up groups of people who want to sit together but doesn't have duplicates
 	while (oAttendees.size() > 0){
 		var chosenAtt = oAttendees[0];
-		_group = chosenAtt.getGroupForAttendee().asSet();
+		var _group = chosenAtt.getGroupForAttendee().asSet();
+		_group = _group.excludingAll(gAttendees.flatten());
 		gAttendees.add(_group);
 		oAttendees = oAttendees.excludingAll(_group);
 	}
-	gAttendees.collect(s|s.size().println());
-	for (set in gAttendees){
-		set.println();
+	
+	// This will join people who are on their own into groups where no one dislikes them
+	var onePersonSets = gAttendees.select(set|set.size() == 1);
+	var notOnePersonSets = gAttendees.select(set|set.size() > 1);
+	
+	for (notOneSet in notOnePersonSets){
+		for (oneSet in onePersonSets){
+			if (not notOneSet.anttendeeWishes.flatten().select(at|at.wish.literal == "Dislike").targetAttendee.asSet().includes(oneSet[0])){
+				notOneSet.add(oneSet[0]);
+				oneSet.clear();
+			}
+		}
 	}
+	onePersonSets = gAttendees.select(set|set.size() == 1);
+	notOnePersonSets = gAttendees.select(set|set.size() > 1);
+	
+	// This will add people who are on their own into anywhere they can find someone who can speak a language
+	for (notOneSet in notOnePersonSets){
+		for (oneSet in onePersonSets){
+			if (notOneSet.spokenLanguages.flatten().exists(l| oneSet[0].spokenLanguages.includes(l))){
+				notOneSet.add(oneSet[0]);
+				oneSet.clear();
+			}
+		}
+	}
+	gAttendees = gAttendees.select(set|set.size()>0);
+	
 	
 	var i = 0;
 	var cap = gAttendees.collect(s|s.size()).max();
 	var tables = new Set();
 	for (set in gAttendees){
-		
-		if (not set.hasUniqueLanguage()){
+		set.println();
+		var uniqueLangs = set.hasUniqueLanguage();
+		if (uniqueLangs.size() > 0){
 			// Check if that language is spoken on another table
 			// If not, then no one speasks it
-			// If is, go through all the people that do and find the one that is easiest to bring over
-			// If none easy, can he go to their table.
+			// If so, move them to their table despite preferences.
 			// Language always above preferences.
-			"In here".println();
-			if (self.attendees.spokenLanguages){}
-		} else {
-			// Sort everyone by their languages
-			// Seat them all down that way so at least one person speaks the same language as you do
-			// Create a new seat for each of them around the table
-			set = set.sortBy(a|a.spokenLanguages.sortBy(l|l.name));
-			var newTable = new Table(uID=i, capacity=cap);
-			var index = 0;
-			var seats = new Set();
-			for (at in set){
-				var seat = new Seat();
-				seat.myTable = newTable;
-				seat.attendeeSeat = at;
-				seat.uID = index;
-				index += 1;
-				seats.add(seat);
+			(uniqueLangs + "are the languages that are only spoken by one person").println();
+			for (lang in uniqueLangs){
+				var attendee = set.select(at|at.spokenLanguages.includes(lang));
+				if (attendee.isDefined()){
+					var tablesWithLang = gAttendees.excluding(set).select(st| st.exists(at|at.spokenLanguages.includes(lang)));
+					if (tablesWithLang.size() > 0){
+						tablesWithLang[0].add(attendee);
+						set.remove(attendee);
+					}
+				}
 			}
-			newTable.seats = seats;
-			tables.add(newTable);
-			i += 1;
 		}
+		
+		// Sort everyone by their languages
+		// Seat them all down that way so at least one person speaks the same language as you do
+		// Create a new seat for each of them around the table
+		set = set.sortBy(a|a.spokenLanguages.sortBy(l|l.name));
+		var newTable = new Out!Table(uID=i, capacity=cap);
+		var index = 0;
+		var seats = new Set();
+		for (at in set){
+			var seat = new Out!Seat();
+			seat.myTable = newTable;
+			seat.attendeeSeat = at;
+			seat.uID = index;
+			index += 1;
+			seats.add(seat);
+		}
+		newTable.seats = seats.println();
+		tables.add(newTable);
+		i += 1;
 	}
 	self.tables = tables;
 }
