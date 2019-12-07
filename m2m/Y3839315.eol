@@ -1,0 +1,153 @@
+import "platform:/plugin/Y3839315/util/tools.eol";
+
+
+operation Out!SeatingPlan preliminaryCheckIsImpossible(): Boolean {
+
+	for (at in self.attendees){
+		// Check if any attendee can't speak to someone else
+		var otherLang = self.attendees.excluding(at).spokenLanguages.flatten().name;
+		if (not at.spokenLanguages.flatten().name.exists(l | otherLang.includes(l))){
+			var msg = at.firstName + " " + at.lastName + " speaks language(s) that no one else understands.";
+			System.user.inform(msg);
+			return true;
+		}
+		
+		// Check if any attendee likes someone who doesn't like them back
+		for (_wish in at.anttendeeWishes){
+			if (_wish.wish.literal == "Like" 
+				and _wish.targetAttendee.anttendeeWishes.exists(w | w.targetAttendee == at and w.wish.literal == "Dislike")){
+					var msg = at.firstName + " " + at.lastName + " has conflicting wishes with " + _wish.targetAttendee.firstName + " " + _wish.targetAttendee.lastName;
+					System.user.inform(msg);
+					return true;
+				}
+		}
+	}
+	return false;
+}
+
+
+operation Set<Attendee> getAttendeesThatCantSpeak(): Map {
+	var results = new Map;
+	for (at in self){
+		var otherLang = self.excluding(at).flatten().spokenLanguages.flatten().name;
+		var lang = at.spokenLanguages.flatten().name.selectOne(l | not otherLang.includes(l));
+		if (lang.isDefined()){
+			results.put(at, lang);
+		}
+	}
+	return results;
+}
+
+
+operation Out!Attendee getLikedPeople(): Set {
+	return self.anttendeeWishes.select(at|at.wish.literal == "Like").targetAttendee.asSet();//.excludingAll(currentList);
+}
+
+operation Out!Attendee getGroupForAttendee() {
+	var baseAr = new Set;
+	baseAr.add(self);
+	var likeAr = baseAr.clone();	
+	while (likeAr.size() > 0){
+		var nextGen = new Set;
+		for (at in likeAr){
+			var newPeop = at.getLikedPeople();
+			nextGen.addAll(newPeop);
+		}
+		likeAr = nextGen.excludingAll(baseAr);
+		baseAr.addAll(likeAr.clone());
+	}
+	return baseAr;
+}
+
+
+operation Out!SeatingPlan sortAttendees(): SeatingPlan {
+	/*
+	Clone all the attendees into a set then order them by uid
+	whilst there is people still in that set, get the result from the getAllInGroup fn
+	Remove the people in the result from the original cloned attendeeList
+	Build up a set of sets of people that must sit with each other
+	*/
+	var oAttendees = self.attendees.clone().asSet().sortBy(a|a.uID);
+	var gAttendees = new Sequence();
+
+	// This sets up groups of people who want to sit together but doesn't have duplicates
+	while (oAttendees.size() > 0){
+		var chosenAtt = oAttendees[0];
+		var _group = chosenAtt.getGroupForAttendee().asSet();
+		_group = _group.excludingAll(gAttendees.flatten());
+		gAttendees.add(_group);
+		oAttendees = oAttendees.excludingAll(_group);
+	}
+	
+	// This will join people who are on their own into groups where no one dislikes them
+	// If not possible, wherever someone can speak their language
+	gAttendees = gAttendees.select(set|set.size()>0);
+	var onePersonSets = gAttendees.select(set|set.size() == 1);
+	var notOnePersonSets = gAttendees.select(set|set.size() > 1);
+	
+	for (notOneSet in notOnePersonSets){
+		for (oneSet in onePersonSets){
+			if (oneSet.size() == 0){delete(oneSet);break;}
+			if (not notOneSet.anttendeeWishes.flatten().select(at|at.wish.literal == "Dislike").targetAttendee.asSet().includes(oneSet[0])){
+				notOneSet.addAll(oneSet);
+				oneSet.clear();
+			} 
+			else if (notOneSet.spokenLanguages.flatten().exists(l| oneSet[0].spokenLanguages.includes(l))) {
+				notOneSet.addAll(oneSet);
+				oneSet.clear();
+			}
+			if (oneSet.size() == 0){delete(oneSet);}
+		}
+	}
+	// Remove all sets that now have no one in them
+	gAttendees = gAttendees.select(set|set.size()>0);
+
+	for (set in gAttendees){	
+		var attendeesCantSpeak = set.getAttendeesThatCantSpeak();
+		
+		for (attendee in attendeesCantSpeak.keySet()){
+			if (set.getAttendeesThatCantSpeak().keySet().includes(attendee)){
+				var lang = attendeesCantSpeak.get(attendee);
+				var tablesWithLang = gAttendees.selectOne(st| st.exists(at|at.spokenLanguages.name.includes(lang)));
+				if (tablesWithLang.isDefined()){
+					set.remove(attendee);
+					tablesWithLang.add(attendee);
+				}
+				else {
+					var smallestTable = gAttendees.sortBy(table|table.size()).select(t | t.size()>1)[0];
+					set.remove(attendee);
+					smallestTable.add(attendee);
+				}
+			}
+		}
+	}
+	// Remove all sets that now have no one in them
+	gAttendees = gAttendees.select(set|set.size()>0);
+	
+	var i = 0;
+	var cap = gAttendees.collect(s|s.size()).max();
+	var tables = new Set();
+	for (set in gAttendees){
+		// Sort everyone by their languages
+		// Seat them all down that way so at least one person speaks the same language as you do
+		// Create a new seat for each of them around the table
+		set = set.sortBy(a|a.spokenLanguages.sortBy(l|l.name));
+		var newTable = new Out!Table(uID=i, capacity=cap);
+		var index = 0;
+		var seats = new Set();
+		for (at in set){
+			var seat = new Out!Seat();
+			seat.myTable = newTable;
+			seat.attendeeSeat = at;
+			seat.uID = index;
+			index += 1;
+			seats.add(seat);
+		}
+		newTable.seats = seats;
+		tables.add(newTable);
+		var isOrderedCorrectly = seats.attendeeSeat.forAll(att | att.isSittingNextToCommonLanguage());
+		if (not isOrderedCorrectly){System.user.inform("The ordering on table " + i + " does not mean everyone sits next to someone who has a language in common with them.");}
+		i += 1;
+	}
+	self.tables = tables;
+}

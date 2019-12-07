@@ -35,7 +35,7 @@
   <attendees xmi:id="_eJcEoBZxEeqv3OqBXDXyuA" uID="3" lastName="Goncalves" firstName="Anna" title="Ms" affiliation="N/A" mySeat="_jJDuYBZzEeqv3OqBXDXyuA" spokenLanguages="_6Yd7oBZwEeqv3OqBXDXyuA _FED7oBZxEeqv3OqBXDXyuA _GEh6IBZxEeqv3OqBXDXyuA" foodAllergies="_D9CCIBZxEeqv3OqBXDXyuA">
     <anttendeeWishes xmi:id="_vfH-EBZxEeqv3OqBXDXyuA" targetAttendee="_m2_DkBZxEeqv3OqBXDXyuA"/>
   </attendees>
-  <attendees xmi:id="_m2_DkBZxEeqv3OqBXDXyuA" uID="4" lastName="Hebert" firstName="Sarah" title="Ms" affiliation="N/A" mySeat="_infSYBZzEeqv3OqBXDXyuA" spokenLanguages="_FED7oBZxEeqv3OqBXDXyuA _FX5doBZxEeqv3OqBXDXyuA">
+  <attendees xmi:id="_m2_DkBZxEeqv3OqBXDXyuA" uID="4" lastName="Hebert" firstName="Sarah" title="Ms" affiliation="N/A" mySeat="_infSYBZzEeqv3OqBXDXyuA" spokenLanguages="_FX5doBZxEeqv3OqBXDXyuA">
     <anttendeeWishes xmi:id="_uDV8kBZxEeqv3OqBXDXyuA" targetAttendee="_Gk41MBZxEeqv3OqBXDXyuA" wish="Dislike"/>
     <anttendeeWishes xmi:id="_9i79cBZ5Eeqv3OqBXDXyuA" targetAttendee="_eJcEoBZxEeqv3OqBXDXyuA"/>
   </attendees>

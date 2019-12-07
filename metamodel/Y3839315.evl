@@ -1,4 +1,4 @@
-import "tools.eol";
+import "platform:/plugin/Y3839315/util/tools.eol";
 
 pre {
 	var tables = Table.all;

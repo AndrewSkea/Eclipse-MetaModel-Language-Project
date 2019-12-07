@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="seatingplan" nsURI="seatingplan" nsPrefix="">
+  <eAnnotations source="gmf"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SeatingPlan">
+    <eAnnotations source="gmf.diagram"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seatingPlanName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" upperBound="-1"
+        eType="#//Table" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="languages" upperBound="-1"
+        eType="#//Language" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allergies" upperBound="-1"
+        eType="#//FoodAllergy" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" upperBound="-1"
+        eType="#//Attendee" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BaseUniqueIDClass" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//BaseUniqueIDClass">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="uID,capacity"/>
+      <details key="label.pattern" value="Table {0} - Capacity: {1}"/>
+      <details key="color" value="253,248,225"/>
+      <details key="border.width" value="3"/>
+      <details key="label.icon" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capacity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="seats" lowerBound="1" upperBound="-1"
+        eType="#//Seat" containment="true" eOpposite="#//Seat/myTable">
+      <eAnnotations source="gmf.affixed"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Seat" eSuperTypes="#//BaseUniqueIDClass">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="uID"/>
+      <details key="label.pattern" value="Seat {0}"/>
+      <details key="color" value="236,164,0"/>
+      <details key="resizable" value="false"/>
+      <details key="figure" value="ellipse"/>
+      <details key="size" value="100,75"/>
+      <details key="border.width" value="2"/>
+      <details key="label.icon" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="myTable" eType="#//Table"
+        eOpposite="#//Table/seats"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attendeeSeat" eType="#//Attendee"
+        eOpposite="#//Attendee/mySeat">
+      <eAnnotations source="gmf.link">
+        <details key="width" value="2"/>
+        <details key="source.decoration" value="filledsquare"/>
+        <details key="style" value="solid"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attendee" eSuperTypes="#//BaseUniqueIDClass">
+    <eAnnotations source="gmf.node">
+      <details key="figure" value="svg"/>
+      <details key="label.icon" value="false"/>
+      <details key="size" value="100,100"/>
+      <details key="border.style" value="solid"/>
+      <details key="border.width" value="1"/>
+      <details key="svg.uri" value="platform:/plugin/assessment/images/Person.svg"/>
+      <details key="label" value="uID,firstName,lastName"/>
+      <details key="label.pattern" value="{0}. {1} {2}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affiliation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mySeat" eType="#//Seat"
+        eOpposite="#//Seat/attendeeSeat"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spokenLanguages" lowerBound="1"
+        upperBound="-1" eType="#//Language"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foodAllergies" upperBound="-1"
+        eType="#//FoodAllergy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anttendeeWishes" upperBound="-1"
+        eType="#//AttendeeWish" containment="true" eOpposite="#//AttendeeWish/sourceAttendee">
+      <eAnnotations source="gmf.affixed"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttendeeWish">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="wish"/>
+      <details key="label.pattern" value="{0}"/>
+      <details key="color" value="174,232,210"/>
+      <details key="border.width" value="2"/>
+      <details key="resizable" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceAttendee" eType="#//Attendee"
+        eOpposite="#//Attendee/anttendeeWishes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetAttendee" eType="#//Attendee"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wish" eType="#//Feeling"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BaseNamedClass" abstract="true">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="border.width" value="2"/>
+      <details key="resizable" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Language" eSuperTypes="#//BaseNamedClass">
+    <eAnnotations source="gmf.node">
+      <details key="label.pattern" value="Language - {0}"/>
+      <details key="color" value="238,184,255"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FoodAllergy" eSuperTypes="#//BaseNamedClass">
+    <eAnnotations source="gmf.node">
+      <details key="label.pattern" value="Food Allergy - {0}"/>
+      <details key="color" value="184,217,255"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Feeling">
+    <eLiterals name="Like"/>
+    <eLiterals name="Dislike" value="1"/>
+  </eClassifiers>
+</ecore:EPackage>

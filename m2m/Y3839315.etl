@@ -1,4 +1,6 @@
-import "tools.eol";
+import "platform:/plugin/Y3839315/m2m/Y3839315.eol";
+
+pre { "Starting transformation".println();}
 
 rule FoodAllergy2FoodAllergy
 	transform s: In!FoodAllergy
@@ -38,13 +40,15 @@ rule SeatingPlan2SeatingPlan
 	transform s: In!SeatingPlan
 	to t : Out!SeatingPlan {
 	
+	t.seatingPlanName = s.seatingPlanName;
+	t.languages = s.languages.equivalent();
+	t.allergies = s.allergies.equivalent();
+	t.attendees = s.attendees.equivalent();
+	
 	if (s.preliminaryCheckIsImpossible()){
 		System.user.inform("Arranging the seating plan without failures is impossible");
-	} else {	
-		t.seatingPlanName = s.seatingPlanName;
-		t.languages = s.languages.equivalent();
-		t.allergies = s.allergies.equivalent();
-		t.attendees = s.attendees.equivalent();
-		t.sortAttendees(); // This will create tables and assign seats and people to them.
 	}
+	t.sortAttendees(); // This will create tables and assign seats and people to them.
 }
+
+post { "Transformation finished".println(); } 

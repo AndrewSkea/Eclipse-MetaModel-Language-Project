@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" seatingPlanName="International Conference">
+  <tables capacity="5">
+    <seats uID="1" attendeeSeat="//@attendees.1"/>
+    <seats uID="2" attendeeSeat="//@attendees.5"/>
+    <seats uID="4" attendeeSeat="//@attendees.4"/>
+    <seats uID="3" attendeeSeat="//@attendees.0"/>
+    <seats attendeeSeat="//@attendees.3"/>
+  </tables>
+  <tables uID="1" capacity="5">
+    <seats attendeeSeat="//@attendees.2"/>
+    <seats uID="1" attendeeSeat="//@attendees.6"/>
+  </tables>
+  <languages name="English"/>
+  <languages name="French"/>
+  <languages name="German"/>
+  <languages name="Chinese"/>
+  <languages name="Russian"/>
+  <allergies name="Nuts"/>
+  <allergies name="Wheat"/>
+  <allergies name="Salmon"/>
+  <allergies name="Shell Fish"/>
+  <attendees lastName="Peatry" firstName="John" title="Mr" affiliation="N/A" mySeat="//@tables.0/@seats.3" spokenLanguages="//@languages.0" foodAllergies="//@allergies.0">
+    <anttendeeWishes targetAttendee="//@attendees.5"/>
+    <anttendeeWishes targetAttendee="//@attendees.4"/>
+  </attendees>
+  <attendees uID="1" lastName="Blair" firstName="Euan" title="Mr" affiliation="N/A" mySeat="//@tables.0/@seats.0" spokenLanguages="//@languages.0 //@languages.1" foodAllergies="//@allergies.2">
+    <anttendeeWishes targetAttendee="//@attendees.3"/>
+  </attendees>
+  <attendees uID="2" lastName="Chung" firstName="Yuri" title="Mr" affiliation="N/A" mySeat="//@tables.1/@seats.0" spokenLanguages="//@languages.3">
+    <anttendeeWishes targetAttendee="//@attendees.6"/>
+  </attendees>
+  <attendees uID="3" lastName="Goncalves" firstName="Anna" title="Ms" affiliation="N/A" mySeat="//@tables.0/@seats.4" spokenLanguages="//@languages.0 //@languages.1 //@languages.4" foodAllergies="//@allergies.1">
+    <anttendeeWishes targetAttendee="//@attendees.4"/>
+  </attendees>
+  <attendees uID="4" lastName="Hebert" firstName="Sarah" title="Ms" affiliation="N/A" mySeat="//@tables.0/@seats.2" spokenLanguages="//@languages.2">
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+    <anttendeeWishes targetAttendee="//@attendees.3"/>
+  </attendees>
+  <attendees uID="5" lastName="Adamson" firstName="Emily" title="Mrs" affiliation="N/A" mySeat="//@tables.0/@seats.1" spokenLanguages="//@languages.4 //@languages.0">
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+  </attendees>
+  <attendees uID="6" lastName="Yan" firstName="YoYo" title="Mr" affiliation="None" mySeat="//@tables.1/@seats.1" spokenLanguages="//@languages.3">
+    <anttendeeWishes targetAttendee="//@attendees.2"/>
+  </attendees>
+</SeatingPlan>

@@ -1,4 +1,5 @@
-import "../tools.eol";
+import "platform:/plugin/Y3839315/util/tools.eol";
+
 pre { 
 	"Transformation starting".println(); 
 	var outDirLib : String = "gen/";

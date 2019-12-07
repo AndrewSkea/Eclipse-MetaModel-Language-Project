@@ -1,0 +1,86 @@
+operation Seat GetNeighbours(): Sequence {
+	var maths = Native("java.lang.Math");
+	var tableSeats = self.myTable.seats;
+	var returned: Sequence;
+	if (tableSeats.size() > 1){
+	 returned = tableSeats.select(s | s.attendeeSeat.isDefined() 
+						and (s.uID == maths.floorMod(self.uID+1,tableSeats.size())
+							 or s.uID == maths.floorMod(self.uID-1,tableSeats.size()))).attendeeSeat;}
+	return returned;
+}
+
+operation Attendee chooseFromAvailableSeats() {
+	var chosenTable = System.user.choose("Choose which table", Table.All);
+  				
+  	if (chosenTable.isDefined()){
+  		var availableSeats = chosenTable.seats.select(s | not s.attendeeSeat.isDefined());
+  		if (availableSeats.size() > 0){
+  			var chosenSeat = System.user.choose("Choose which seat", availableSeats);
+  			if (chosenSeat.isDefined()) self.mySeat = chosenSeat;	
+  		}
+  		else System.user.inform("There are no available seats at this table. Add a seat to assign this attendee.");
+  	} else System.user.inform("There are no available tables");
+}
+
+operation OrderedSet makeNACompatiable(): OrderedSet {
+	var attendees = self.clone();
+	for (at in attendees){
+		if (not at.lastName.isDefined()){at.lastName = "N/A";}
+		if (not at.firstName.isDefined()){at.firstName = "N/A";}
+		if (not at.affiliation.isDefined()){at.affiliation = "N/A";}
+		if (at.mySeat.isDefined()){
+			at.~tmpMySeat = at.mySeat.uID;
+			if (at.mySeat.myTable.isDefined()){
+				at.~myTable = at.mySeat.myTable.uID;
+			} else {at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
+		} else { at.~tmpMySeat = "N/A"; at.~myTable = "N/A";}
+	}
+	return attendees;
+}
+
+operation Attendee isSittingNextToCommonLanguage(): Boolean {
+	var neighbours = self.mySeat.GetNeighbours();
+	if (neighbours.size() > 0){
+		return self.spokenLanguages.exists(sl | neighbours.spokenLanguages.flatten().includes(sl));}
+	else {return false;}
+}
+
+operation Attendee IsOnSameTableAs(target: Attendee): Boolean {
+	return self.mySeat.myTable.seats.attendeeSeat.includes(target);
+}
+
+operation Attendee GetFailedWishes(): Map {
+	var atSeats = self.mySeat.myTable.seats.attendeeSeat;
+	var failedWishes = self.anttendeeWishes
+						.select(aW | (aW.wish.literal == "Dislike" and atSeats.includes(aW.targetAttendee))
+									 or
+									 (aW.wish.literal == "Like" and not atSeats.includes(aW.targetAttendee)))
+						.aggregate(aW | aW.targetAttendee, aW.wish);
+	return failedWishes;
+	
+}
+
+operation AttendeeWish GetAttendeeFromListBarSelf(): Sequence {
+	var possibleAttendees = Attendee.all.reject(a | a == self.sourceAttendee);
+	var att = System.user.choose("Choose attendees", possibleAttendees);
+	var toReturn = null;
+	if (att.isDefined()){toReturn = att;}
+	else {System.user.inform("You have chosen no attendee");}
+	return toReturn;
+}
+
+
+operation SeatingPlan getAllFailures(): Map {
+	var failed = new Map;
+	var failedWishes = new Map;
+	var failedLanguages = new Map;
+	
+	for (at in self.attendees){
+		var fails = at.GetFailedWishes();
+		if (fails.size() > 0){failedWishes.put(at, fails);}
+		if (at.isSittingNextToCommonLanguage()){failedLanguages.put(at, false);}
+	}
+	if (failedWishes.size()>0) failed.put('failedWishes', failedWishes); // att, (targetAtt, wish)
+	if (failedLanguages.size()>0) failed.put('failedLanguages', failedLanguages); // att, boolean
+	return failed;
+}
