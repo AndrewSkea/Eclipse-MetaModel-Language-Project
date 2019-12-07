@@ -3,7 +3,10 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="seatingplan" nsURI="seatingplan" nsPrefix="">
   <eAnnotations source="gmf"/>
   <eClassifiers xsi:type="ecore:EClass" name="SeatingPlan">
-    <eAnnotations source="gmf.diagram"/>
+    <eAnnotations source="gmf.diagram">
+      <details key="diagram.extension" value="Y3839315"/>
+      <details key="model.extension" value="model"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="seatingPlanName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tables" upperBound="-1"
         eType="#//Table" containment="true"/>
@@ -60,9 +63,9 @@
       <details key="size" value="100,100"/>
       <details key="border.style" value="solid"/>
       <details key="border.width" value="1"/>
-      <details key="svg.uri" value="platform:/plugin/assessment/images/Person.svg"/>
+      <details key="svg.uri" value="platform:/plugin/Y3839315/images/Person.svg"/>
       <details key="label" value="uID,firstName,lastName"/>
-      <details key="label.pattern" value="{0}. {1} {2}"/>
+      <details key="label.pattern" value="{0}. {2} {3}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

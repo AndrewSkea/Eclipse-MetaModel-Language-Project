@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="" modelDirectory="/Y3839315/src" modelPluginID="Y3839315"
+    modelName="Seatingplan" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false">
+  <foreignModel>Y3839315.ecore</foreignModel>
+  <genPackages prefix="Seatingplan" disposableProviderFactory="true" ecorePackage="Y3839315.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Y3839315.ecore#//Feeling">
+      <genEnumLiterals ecoreEnumLiteral="Y3839315.ecore#//Feeling/Like"/>
+      <genEnumLiterals ecoreEnumLiteral="Y3839315.ecore#//Feeling/Dislike"/>
+    </genEnums>
+    <genClasses ecoreClass="Y3839315.ecore#//SeatingPlan">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//SeatingPlan/seatingPlanName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//SeatingPlan/tables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//SeatingPlan/languages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//SeatingPlan/allergies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//SeatingPlan/attendees"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Y3839315.ecore#//BaseUniqueIDClass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//BaseUniqueIDClass/uID"/>
+    </genClasses>
+    <genClasses ecoreClass="Y3839315.ecore#//Table">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//Table/capacity"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Table/seats"/>
+    </genClasses>
+    <genClasses ecoreClass="Y3839315.ecore#//Seat">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Y3839315.ecore#//Seat/myTable"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Seat/attendeeSeat"/>
+    </genClasses>
+    <genClasses ecoreClass="Y3839315.ecore#//Attendee">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//Attendee/lastName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//Attendee/firstName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//Attendee/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//Attendee/affiliation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Attendee/mySeat"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Attendee/spokenLanguages"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Attendee/foodAllergies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Y3839315.ecore#//Attendee/anttendeeWishes"/>
+    </genClasses>
+    <genClasses ecoreClass="Y3839315.ecore#//AttendeeWish">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Y3839315.ecore#//AttendeeWish/sourceAttendee"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Y3839315.ecore#//AttendeeWish/targetAttendee"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//AttendeeWish/wish"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Y3839315.ecore#//BaseNamedClass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Y3839315.ecore#//BaseNamedClass/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Y3839315.ecore#//Language"/>
+    <genClasses ecoreClass="Y3839315.ecore#//FoodAllergy"/>
+  </genPackages>
+</genmodel:GenModel>

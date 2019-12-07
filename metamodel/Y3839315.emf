@@ -2,7 +2,7 @@
 @namespace(uri="seatingplan", prefix="")
 package seatingplan;
 
-@gmf.diagram
+@gmf.diagram(diagram.extension="Y3839315", model.extension="model")
 class SeatingPlan {
   attr String seatingPlanName;
   val Table[*] tables;
@@ -31,7 +31,7 @@ class Seat extends BaseUniqueIDClass {
   ref Attendee#mySeat attendeeSeat;
 }
 
-@gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/assessment/images/Person.svg", label="uID,firstName,lastName", label.pattern="{0}. {1} {2}")
+@gmf.node(figure="svg", label.icon="false", size="100,100", border.style="solid", border.width="1", svg.uri="platform:/plugin/Y3839315/images/Person.svg", label="uID,firstName,lastName", label.pattern="{0}. {2} {3}")
 class Attendee extends BaseUniqueIDClass {
   attr String lastName;
   attr String firstName;

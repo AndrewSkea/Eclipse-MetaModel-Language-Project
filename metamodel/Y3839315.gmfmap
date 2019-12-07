@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gmfmap:Mapping
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:gmfmap="http://www.eclipse.org/gmf/2008/mappings"
+    xmlns:gmftool="http://www.eclipse.org/gmf/2005/ToolDefinition">
+  <nodes>
+    <containmentFeature
+        href="Y3839315.ecore#//SeatingPlan/tables"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Y3839315.ecore#//Table"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern="Table {0} - Capacity: {1}"
+          editorPattern="Table {0} - Capacity: {1}"
+          editPattern="Table {0} - Capacity: {1}">
+        <diagramLabel
+            href="Y3839315.gmfgraph#TableLabel"/>
+        <features
+            href="Y3839315.ecore#//BaseUniqueIDClass/uID"/>
+        <features
+            href="Y3839315.ecore#//Table/capacity"/>
+      </labelMappings>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Y3839315.gmftool#//@palette/@tools.3/@tools.0"/>
+      <diagramNode
+          href="Y3839315.gmfgraph#Table"/>
+      <children>
+        <containmentFeature
+            href="Y3839315.ecore#//Table/seats"/>
+        <ownedChild>
+          <domainMetaElement
+              href="Y3839315.ecore#//Seat"/>
+          <labelMappings
+              xsi:type="gmfmap:FeatureLabelMapping"
+              viewPattern="Seat {0}"
+              editorPattern="Seat {0}"
+              editPattern="Seat {0}">
+            <diagramLabel
+                href="Y3839315.gmfgraph#SeatLabel"/>
+            <features
+                href="Y3839315.ecore#//BaseUniqueIDClass/uID"/>
+          </labelMappings>
+          <tool
+              xsi:type="gmftool:CreationTool"
+              href="Y3839315.gmftool#//@palette/@tools.3/@tools.1"/>
+          <diagramNode
+              href="Y3839315.gmfgraph#Seat"/>
+        </ownedChild>
+      </children>
+    </ownedChild>
+  </nodes>
+  <nodes>
+    <containmentFeature
+        href="Y3839315.ecore#//SeatingPlan/languages"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Y3839315.ecore#//Language"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern="Language - {0}"
+          editorPattern="Language - {0}"
+          editPattern="Language - {0}">
+        <diagramLabel
+            href="Y3839315.gmfgraph#LanguageLabel"/>
+        <features
+            href="Y3839315.ecore#//BaseNamedClass/name"/>
+      </labelMappings>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Y3839315.gmftool#//@palette/@tools.2/@tools.1"/>
+      <diagramNode
+          href="Y3839315.gmfgraph#Language"/>
+    </ownedChild>
+  </nodes>
+  <nodes>
+    <containmentFeature
+        href="Y3839315.ecore#//SeatingPlan/allergies"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Y3839315.ecore#//FoodAllergy"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern="Food Allergy - {0}"
+          editorPattern="Food Allergy - {0}"
+          editPattern="Food Allergy - {0}">
+        <diagramLabel
+            href="Y3839315.gmfgraph#FoodAllergyLabel"/>
+        <features
+            href="Y3839315.ecore#//BaseNamedClass/name"/>
+      </labelMappings>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Y3839315.gmftool#//@palette/@tools.2/@tools.0"/>
+      <diagramNode
+          href="Y3839315.gmfgraph#FoodAllergy"/>
+    </ownedChild>
+  </nodes>
+  <nodes>
+    <containmentFeature
+        href="Y3839315.ecore#//SeatingPlan/attendees"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Y3839315.ecore#//Attendee"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern="{0}. {2} {3}"
+          editorPattern="{0}. {2} {3}"
+          editPattern="{0}. {2} {3}">
+        <diagramLabel
+            href="Y3839315.gmfgraph#AttendeeLabel"/>
+        <features
+            href="Y3839315.ecore#//BaseUniqueIDClass/uID"/>
+        <features
+            href="Y3839315.ecore#//Attendee/lastName"/>
+        <features
+            href="Y3839315.ecore#//Attendee/firstName"/>
+      </labelMappings>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Y3839315.gmftool#//@palette/@tools.1/@tools.0"/>
+      <diagramNode
+          href="Y3839315.gmfgraph#Attendee"/>
+      <children>
+        <containmentFeature
+            href="Y3839315.ecore#//Attendee/anttendeeWishes"/>
+        <ownedChild>
+          <domainMetaElement
+              href="Y3839315.ecore#//AttendeeWish"/>
+          <labelMappings
+              xsi:type="gmfmap:FeatureLabelMapping"
+              viewPattern="{0}"
+              editorPattern="{0}"
+              editPattern="{0}">
+            <diagramLabel
+                href="Y3839315.gmfgraph#AttendeeWishLabel"/>
+            <features
+                href="Y3839315.ecore#//AttendeeWish/wish"/>
+          </labelMappings>
+          <tool
+              xsi:type="gmftool:CreationTool"
+              href="Y3839315.gmftool#//@palette/@tools.1/@tools.1"/>
+          <diagramNode
+              href="Y3839315.gmfgraph#AttendeeWish"/>
+        </ownedChild>
+      </children>
+    </ownedChild>
+  </nodes>
+  <links>
+    <labelMappings
+        xsi:type="gmfmap:DesignLabelMapping"
+        readOnly="true">
+      <diagramLabel
+          href="Y3839315.gmfgraph#SeatAttendeeSeatExternalLabel"/>
+    </labelMappings>
+    <tool
+        xsi:type="gmftool:CreationTool"
+        href="Y3839315.gmftool#//@palette/@tools.0/@tools.0"/>
+    <diagramLink
+        href="Y3839315.gmfgraph#SeatAttendeeSeat"/>
+    <linkMetaFeature
+        xsi:type="ecore:EReference"
+        href="Y3839315.ecore#//Seat/attendeeSeat"/>
+  </links>
+  <diagram>
+    <diagramCanvas
+        href="Y3839315.gmfgraph#seatingplan"/>
+    <domainModel
+        href="Y3839315.ecore#/"/>
+    <domainMetaElement
+        href="Y3839315.ecore#//SeatingPlan"/>
+    <palette
+        href="Y3839315.gmftool#//@palette"/>
+  </diagram>
+</gmfmap:Mapping>

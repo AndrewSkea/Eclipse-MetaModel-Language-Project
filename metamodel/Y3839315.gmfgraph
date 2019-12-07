@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gmfgraph:Canvas xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmfgraph="http://www.eclipse.org/gmf/2006/GraphicalDefinition" name="seatingplan">
+  <figures name="Default">
+    <figures xsi:type="gmfgraph:PolygonDecoration" name="FilledSqare">
+      <template y="1"/>
+      <template x="-1" y="1"/>
+      <template x="-1" y="-1"/>
+      <template y="-1"/>
+      <template y="1"/>
+    </figures>
+    <descriptors name="TableFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="TableFigure" lineWidth="3">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <backgroundColor xsi:type="gmfgraph:RGBColor" red="253" green="248" blue="225"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="TableLabelFigure" text="Table">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+          <font xsi:type="gmfgraph:BasicFont" height="15" style="BOLD"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureTableLabelFigure" figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="SeatFigure">
+      <actualFigure xsi:type="gmfgraph:Ellipse" name="SeatFigure" lineWidth="2">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <backgroundColor xsi:type="gmfgraph:RGBColor" red="236" green="164"/>
+        <preferredSize dx="100" dy="75"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="SeatLabelFigure" text="Seat">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+          <font xsi:type="gmfgraph:BasicFont" height="11"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureSeatLabelFigure" figure="//@figures.0/@descriptors.1/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="AttendeeFigure">
+      <actualFigure xsi:type="gmfgraph:SVGFigure" name="AttendeeFigure" documentURI="platform:/plugin/Y3839315/images/Person.svg">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <preferredSize dx="100" dy="100"/>
+        <insets/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="AttendeeLabelFigure" text="Attendee">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true"/>
+          <font xsi:type="gmfgraph:BasicFont" height="10" style="BOLD"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureAttendeeLabelFigure" figure="//@figures.0/@descriptors.2/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="AttendeeWishFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="AttendeeWishFigure" lineWidth="2">
+        <backgroundColor xsi:type="gmfgraph:RGBColor" red="174" green="232" blue="210"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="AttendeeWishLabelFigure" text="AttendeeWish"/>
+      </actualFigure>
+      <accessors accessor="getFigureAttendeeWishLabelFigure" figure="//@figures.0/@descriptors.3/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="LanguageFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="LanguageFigure" lineWidth="2">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <backgroundColor xsi:type="gmfgraph:RGBColor" red="238" green="184" blue="255"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="LanguageLabelFigure" text="Language">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+          <font xsi:type="gmfgraph:BasicFont" height="10" style="ITALIC"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureLanguageLabelFigure" figure="//@figures.0/@descriptors.4/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="FoodAllergyFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="FoodAllergyFigure" lineWidth="2">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <backgroundColor xsi:type="gmfgraph:RGBColor" red="184" green="217" blue="255"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="FoodAllergyLabelFigure" text="FoodAllergy">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+          <font xsi:type="gmfgraph:BasicFont" height="10" style="ITALIC"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureFoodAllergyLabelFigure" figure="//@figures.0/@descriptors.5/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="SeatAttendeeSeatFigure">
+      <actualFigure xsi:type="gmfgraph:PolylineConnection" name="SeatAttendeeSeatFigure" lineWidth="2" sourceDecoration="//@figures.0/@figures.0"/>
+    </descriptors>
+    <descriptors name="SeatAttendeeSeatExternalLabelFigure">
+      <actualFigure xsi:type="gmfgraph:Label" name="SeatAttendeeSeatExternalLabel"/>
+    </descriptors>
+  </figures>
+  <nodes name="Table" figure="TableFigure"/>
+  <nodes name="Seat" figure="SeatFigure" affixedParentSide="NORTH">
+    <facets xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize dx="100" dy="75"/>
+    </facets>
+  </nodes>
+  <nodes name="Attendee" figure="AttendeeFigure">
+    <facets xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize dx="100" dy="100"/>
+    </facets>
+  </nodes>
+  <nodes name="AttendeeWish" figure="AttendeeWishFigure" affixedParentSide="NORTH"/>
+  <nodes name="Language" figure="LanguageFigure"/>
+  <nodes name="FoodAllergy" figure="FoodAllergyFigure"/>
+  <connections name="SeatAttendeeSeat" figure="SeatAttendeeSeatFigure"/>
+  <labels name="TableLabel" figure="TableFigure" elementIcon="false" accessor="//@figures.0/@descriptors.0/@accessors.0"/>
+  <labels name="SeatLabel" figure="SeatFigure" elementIcon="false" accessor="//@figures.0/@descriptors.1/@accessors.0"/>
+  <labels name="AttendeeLabel" figure="AttendeeFigure" elementIcon="false" accessor="//@figures.0/@descriptors.2/@accessors.0"/>
+  <labels name="AttendeeWishLabel" figure="AttendeeWishFigure" accessor="//@figures.0/@descriptors.3/@accessors.0"/>
+  <labels name="LanguageLabel" figure="LanguageFigure" accessor="//@figures.0/@descriptors.4/@accessors.0"/>
+  <labels name="FoodAllergyLabel" figure="FoodAllergyFigure" accessor="//@figures.0/@descriptors.5/@accessors.0"/>
+  <labels name="SeatAttendeeSeatExternalLabel" figure="SeatAttendeeSeatExternalLabelFigure" elementIcon="false"/>
+</gmfgraph:Canvas>

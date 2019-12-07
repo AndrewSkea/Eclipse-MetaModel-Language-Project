@@ -14,7 +14,7 @@
   <attendees xmi:id="_z_uH8BEtEeqWoJeGMAjeKA" uID="1" lastName="Corbeen" firstName="James" title="Mr" affiliation="UK" mySeat="_zFmpEBEtEeqWoJeGMAjeKA" spokenLanguages="_vhxV8BEtEeqWoJeGMAjeKA" foodAllergies="_uMMqIBEtEeqWoJeGMAjeKA">
     <anttendeeWishes xmi:id="_-kOogBEtEeqWoJeGMAjeKA" targetAttendee="_qJjUEBEtEeqWoJeGMAjeKA" wish="Dislike"/>
   </attendees>
-  <attendees xmi:id="_Rd30gBkwEeqK6tpzgsFiew" uID="2" lastName="Jenson" firstName="Bors" title="Mr" affiliation="UK" mySeat="_Y8TU8BkwEeqK6tpzgsFiew" spokenLanguages="_vhxV8BEtEeqWoJeGMAjeKA">
+  <attendees xmi:id="_Rd30gBkwEeqK6tpzgsFiew" uID="2" lastName="Jenson" firstName="Bors" title="Mr" affiliation="UK" mySeat="_Y8TU8BkwEeqK6tpzgsFiew" spokenLanguages="_6PNwEBEtEeqWoJeGMAjeKA">
     <anttendeeWishes xmi:id="_R57eYBkwEeqK6tpzgsFiew" targetAttendee="_z_uH8BEtEeqWoJeGMAjeKA" wish="Dislike"/>
     <anttendeeWishes xmi:id="_bdv-ABkwEeqK6tpzgsFiew" targetAttendee="_qJjUEBEtEeqWoJeGMAjeKA"/>
   </attendees>
