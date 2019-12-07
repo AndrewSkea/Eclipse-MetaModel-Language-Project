@@ -48,7 +48,7 @@
   <attendees xmi:id="_o8xNIBhaEeq0NvVkHmpquQ" uID="6" lastName="Yan" firstName="YoYo" title="Mr" affiliation="None" mySeat="_jhVEcBZzEeqv3OqBXDXyuA" spokenLanguages="_FrcEsBZxEeqv3OqBXDXyuA">
     <anttendeeWishes xmi:id="_6ZbRQBhaEeq0NvVkHmpquQ" targetAttendee="_G4BzoBZxEeqv3OqBXDXyuA"/>
   </attendees>
-  <attendees xmi:id="_2fj3IBkzEeq9QeYY6wt_ZQ" uID="7" lastName="Stor" firstName="Gabriel" title="Mr" affiliation="NASA" mySeat="_h3R9cBZzEeqv3OqBXDXyuA" spokenLanguages="_GEh6IBZxEeqv3OqBXDXyuA _FX5doBZxEeqv3OqBXDXyuA"/>
+  <attendees xmi:id="_2fj3IBkzEeq9QeYY6wt_ZQ" uID="7" lastName="Stor" firstName="Gabriel" title="Mr" affiliation="NASA" mySeat="_h3R9cBZzEeqv3OqBXDXyuA" spokenLanguages="_GEh6IBZxEeqv3OqBXDXyuA _FX5doBZxEeqv3OqBXDXyuA" foodAllergies="_D9CCIBZxEeqv3OqBXDXyuA"/>
   <attendees xmi:id="_2fkeMBkzEeq9QeYY6wt_ZQ" uID="8" lastName="Delalex" firstName="Margaux" title="Ms" affiliation="SpaceX" mySeat="_gBjK4BZzEeqv3OqBXDXyuA" spokenLanguages="_6Yd7oBZwEeqv3OqBXDXyuA _FED7oBZxEeqv3OqBXDXyuA">
     <anttendeeWishes xmi:id="_2fkeMRkzEeq9QeYY6wt_ZQ" targetAttendee="_m2_DkBZxEeqv3OqBXDXyuA" wish="Dislike"/>
   </attendees>
