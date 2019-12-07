@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" seatingPlanName="International Conference">
+  <tables capacity="3">
+    <seats attendeeSeat="//@attendees.1"/>
+    <seats uID="1" attendeeSeat="//@attendees.0"/>
+    <seats uID="2" attendeeSeat="//@attendees.2"/>
+  </tables>
+  <languages name="English"/>
+  <languages name="French"/>
+  <allergies name="Nuts"/>
+  <attendees lastName="Tremp" firstName="Daniel" title="Mr" affiliation="USA" mySeat="//@tables.0/@seats.1" spokenLanguages="//@languages.0">
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+  </attendees>
+  <attendees uID="1" lastName="Corbeen" firstName="James" title="Mr" affiliation="UK" mySeat="//@tables.0/@seats.0" spokenLanguages="//@languages.0" foodAllergies="//@allergies.0">
+    <anttendeeWishes targetAttendee="//@attendees.0" wish="Dislike"/>
+  </attendees>
+  <attendees uID="2" lastName="Jenson" firstName="Bors" title="Mr" affiliation="UK" mySeat="//@tables.0/@seats.2" spokenLanguages="//@languages.0">
+    <anttendeeWishes targetAttendee="//@attendees.1" wish="Dislike"/>
+    <anttendeeWishes targetAttendee="//@attendees.0"/>
+  </attendees>
+</SeatingPlan>

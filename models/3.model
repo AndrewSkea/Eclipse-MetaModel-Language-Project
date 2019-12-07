@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_edIJMBEtEeqWoJeGMAjeKA">
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_edIJMBEtEeqWoJeGMAjeKA" seatingPlanName="Political Debate">
   <tables xmi:id="_w1g1wBEtEeqWoJeGMAjeKA" capacity="3">
     <seats xmi:id="_x-11UBEtEeqWoJeGMAjeKA" attendeeSeat="_qJjUEBEtEeqWoJeGMAjeKA"/>
     <seats xmi:id="_zFmpEBEtEeqWoJeGMAjeKA" uID="1" attendeeSeat="_z_uH8BEtEeqWoJeGMAjeKA"/>
@@ -10,9 +10,11 @@
   <allergies xmi:id="_uMMqIBEtEeqWoJeGMAjeKA" name="Nuts"/>
   <attendees xmi:id="_qJjUEBEtEeqWoJeGMAjeKA" lastName="Tremp" firstName="Daniel" title="Mr" affiliation="USA" mySeat="_x-11UBEtEeqWoJeGMAjeKA" spokenLanguages="_vhxV8BEtEeqWoJeGMAjeKA">
     <anttendeeWishes xmi:id="__oL_4BEtEeqWoJeGMAjeKA" targetAttendee="_z_uH8BEtEeqWoJeGMAjeKA" wish="Dislike"/>
+    <anttendeeWishes targetAttendee="_Rd30gBkwEeqK6tpzgsFiew" wish="Dislike"/>
   </attendees>
   <attendees xmi:id="_z_uH8BEtEeqWoJeGMAjeKA" uID="1" lastName="Corbeen" firstName="James" title="Mr" affiliation="UK" mySeat="_zFmpEBEtEeqWoJeGMAjeKA" spokenLanguages="_vhxV8BEtEeqWoJeGMAjeKA" foodAllergies="_uMMqIBEtEeqWoJeGMAjeKA">
     <anttendeeWishes xmi:id="_-kOogBEtEeqWoJeGMAjeKA" targetAttendee="_qJjUEBEtEeqWoJeGMAjeKA" wish="Dislike"/>
+    <anttendeeWishes targetAttendee="_Rd30gBkwEeqK6tpzgsFiew" wish="Dislike"/>
   </attendees>
   <attendees xmi:id="_Rd30gBkwEeqK6tpzgsFiew" uID="2" lastName="Jenson" firstName="Bors" title="Mr" affiliation="UK" mySeat="_Y8TU8BkwEeqK6tpzgsFiew" spokenLanguages="_6PNwEBEtEeqWoJeGMAjeKA">
     <anttendeeWishes xmi:id="_R57eYBkwEeqK6tpzgsFiew" targetAttendee="_z_uH8BEtEeqWoJeGMAjeKA" wish="Dislike"/>

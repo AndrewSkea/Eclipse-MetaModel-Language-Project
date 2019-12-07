@@ -108,9 +108,9 @@
           href="Y3839315.ecore#//Attendee"/>
       <labelMappings
           xsi:type="gmfmap:FeatureLabelMapping"
-          viewPattern="{0}. {2} {3}"
-          editorPattern="{0}. {2} {3}"
-          editPattern="{0}. {2} {3}">
+          viewPattern="{0}. {2} {1}"
+          editorPattern="{0}. {2} {1}"
+          editPattern="{0}. {2} {1}">
         <diagramLabel
             href="Y3839315.gmfgraph#AttendeeLabel"/>
         <features

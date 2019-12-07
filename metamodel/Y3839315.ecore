@@ -65,7 +65,7 @@
       <details key="border.width" value="1"/>
       <details key="svg.uri" value="platform:/plugin/Y3839315/images/Person.svg"/>
       <details key="label" value="uID,firstName,lastName"/>
-      <details key="label.pattern" value="{0}. {2} {3}"/>
+      <details key="label.pattern" value="{0}. {2} {1}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

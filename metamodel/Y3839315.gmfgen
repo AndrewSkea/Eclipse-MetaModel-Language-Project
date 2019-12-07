@@ -132,7 +132,7 @@
         <viewmap xsi:type="gmfgen:ParentAssignedViewmap" getterName="getFigureAttendeeLabelFigure" figureQualifiedClassName="org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel">
           <attributes xsi:type="gmfgen:StyleAttributes" fixedFont="true"/>
         </viewmap>
-        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet" parser="//@labelParsers/@implementations.0" viewPattern="{0}. {2} {3}" editorPattern="{0}. {2} {3}" editPattern="{0}. {2} {3}">
+        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet" parser="//@labelParsers/@implementations.0" viewPattern="{0}. {2} {1}" editorPattern="{0}. {2} {1}" editPattern="{0}. {2} {1}">
           <metaFeatures href="Y3839315.genmodel#//seatingplan/BaseUniqueIDClass/uID"/>
           <metaFeatures href="Y3839315.genmodel#//seatingplan/Attendee/lastName"/>
           <metaFeatures href="Y3839315.genmodel#//seatingplan/Attendee/firstName"/>

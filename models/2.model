@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_edIJMBEtEeqWoJeGMAjeKA">
+<SeatingPlan xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="seatingplan" xmi:id="_edIJMBEtEeqWoJeGMAjeKA" seatingPlanName="International Conference">
   <tables xmi:id="_w1g1wBEtEeqWoJeGMAjeKA" capacity="3">
     <seats xmi:id="_x-11UBEtEeqWoJeGMAjeKA" attendeeSeat="_qJjUEBEtEeqWoJeGMAjeKA"/>
     <seats xmi:id="_zFmpEBEtEeqWoJeGMAjeKA" uID="1" attendeeSeat="_z_uH8BEtEeqWoJeGMAjeKA"/>
